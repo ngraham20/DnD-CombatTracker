@@ -5,8 +5,7 @@ import java.util.Arrays;
 
 public abstract class Character
 {
-    //TODO add temp hitpoints option
-    //TODO have way to fully delete character????
+    private int temporaryHP;
     private String characterName;
     private int armorClass;
     private int maxHealth;
@@ -29,10 +28,19 @@ public abstract class Character
         characterType = newType;
     }
 
-    public void resetSaves()
+    public void resetSavingThrows()
     {
         Arrays.fill(successSaves, Boolean.FALSE);
         Arrays.fill(failSaves, Boolean.FALSE);
+    }
+
+    public int getTempHP() {
+        if (temporaryHP > 0) {
+            return temporaryHP;
+        }
+        else {
+            return -1;
+        }
     }
 
     public void addFailedSave()
@@ -59,20 +67,45 @@ public abstract class Character
         }
     }
 
-    public void takeDamage(int damage)
+    public void takeDamage(int damage) throws Exception
     {
-        int damagedHealth = currentHealth - damage;
 
-        if(damagedHealth <  0)
+        //don't want to damage for negatives cause thats weird reverse healing, and 0 damage is pointless
+        if(damage <= 0)
         {
-            currentHealth = 0;
+            throw new Exception();
         }
+        //if all damage goes into taking down the temp hp then just subtract from tempHp and done
+        else if(temporaryHP > 0 && damage <= temporaryHP)
+        {
+            temporaryHP -= damage;
+
+        }
+        //damage will overflow temporaryHP, so must subtract from main health
         else
         {
-            currentHealth = damagedHealth;
+            //temporary hp isn't 0, so subtract it from damage, so later calculation will use leftover damage amt instead of passed in total
+            if (temporaryHP > 0)
+            {
+                temporaryHP = 0;
+                damage -= temporaryHP;
+            }
+
+            int damagedHealth = currentHealth - damage;
+
+            if(damagedHealth <  0)
+            {
+                currentHealth = 0;
+            }
+            else
+            {
+                currentHealth = damagedHealth;
+            }
+
+            currentHealth -= damage;
         }
 
-        currentHealth -= damage;
+
 
     }
 
@@ -87,6 +120,11 @@ public abstract class Character
         {
             currentHealth = healedHealth;
         }
+    }
+
+    public void setTemporaryHP(int newTempHP)
+    {
+        temporaryHP = newTempHP;
     }
 
     public String getCharacterName() {
