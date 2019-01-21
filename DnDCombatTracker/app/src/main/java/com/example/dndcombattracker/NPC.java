@@ -1,3 +1,5 @@
+package com.example.dndcombattracker;
+
 public class NPC extends Character
 {
     public NPC(String name, int newAC, int newMaxHP, int newInitMod)

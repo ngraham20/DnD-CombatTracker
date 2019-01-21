@@ -1,3 +1,5 @@
+package com.example.dndcombattracker;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
