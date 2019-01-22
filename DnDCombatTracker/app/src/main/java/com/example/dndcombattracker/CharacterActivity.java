@@ -19,6 +19,11 @@ public class CharacterActivity extends AppCompatActivity {
     private TextView initiativeText = (TextView) findViewById(R.id.currentInitiative);
     private TextView initModText = (TextView) findViewById(R.id.initiativeMod);
 
+    private TextView typeTextDisplay = (TextView) findViewById(R.id.charTypeDisplay);
+    private TextView armorTextDisplay = (TextView) findViewById(R.id.armorClassDisplay);
+    private TextView initiativeTextDisplay = (TextView) findViewById(R.id.currentInitiativeDisplay);
+    private TextView initModTextDisplay = (TextView) findViewById(R.id.initiativeModDisplay);
+
     private TextView currentHpText = (TextView) findViewById(R.id.currentHP);
     private TextView tempHpText = (TextView) findViewById(R.id.tempHP);
 
@@ -55,6 +60,8 @@ public class CharacterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_character);
 
         //TODO set actual character in here???
+
+        //TODO move initializations in here??
     }
 
     public void setNameText()
