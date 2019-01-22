@@ -168,8 +168,27 @@ public abstract class Character
         return initiativeModifier;
     }
 
-    public type getCharacterType() {
-        return characterType;
+    public String getCharacterType() {
+
+        switch(characterType) {
+            case MONSTER:
+            {
+                return "Monster";
+            }
+            case PLAYER:
+            {
+                return "Player";
+            }
+            case NONPLAYER:
+            {
+                return "NPC";
+            }
+            default:
+            {
+                return "";
+            }
+
+        }
     }
 
     public void setArmorClass(int armorClass) {
