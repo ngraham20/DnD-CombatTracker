@@ -4,6 +4,7 @@ package com.example.dndcombattracker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -75,7 +76,138 @@ public class CharacterActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: Getting Intent");
         Character character = (Character) getIntent().getSerializableExtra(CharacterAdapter.CHARACTER_EXTRA);
+
+        Log.d(TAG, "onCreate: Setting Text Displays");
+        setNameText();
+        setStatsText();
+        setHealthText();
+
+        Log.d(TAG, "onCreate: Watching Buttons");
+        buttonWatcher();
+
     }
+
+    public void buttonWatcher()
+    {
+        healButton.setOnClickListener(new HpOnClickListener(this, true));
+        damageButton.setOnClickListener(new HpOnClickListener(this, false));
+
+        changeInitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int newInit = Integer.parseInt(editInit.getText().toString());
+                character.setCurrentInitiative(newInit);
+            }
+        });
+
+        changeInitModButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int newInitMod = Integer.parseInt(editInitMod.getText().toString());
+                character.setInitiativeModifier(newInitMod);
+            }
+        });
+
+        changeHPButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int newHp = Integer.parseInt(editHp.getText().toString());
+                character.setMaxHealth(newHp);
+            }
+        });
+
+        changeACButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int newAC = Integer.parseInt(editAC.getText().toString());
+                character.setArmorClass(newAC);
+            }
+        });
+
+        changeNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newName = editName.getText().toString();
+                character.setCharacterName(newName);
+            }
+        });
+    }
+
+
+    private class HpOnClickListener implements View.OnClickListener
+    {
+        private CharacterActivity activity;
+        private boolean type;
+        public HpOnClickListener(CharacterActivity newActivity, boolean newType)
+        {
+            activity = newActivity;
+            type = newType;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            int amount = Integer.parseInt(healthEdit.getText().toString());
+            activity.updateCurrentHp(type, amount);
+        }
+    }
+
+    public void setNameText()
+    {
+        nameText.setText(character.getCharacterName());
+    }
+
+    public void setStatsText()
+    {
+        typeText.setText(character.getCharacterType());
+        armorText.setText(character.getArmorClass());
+        initiativeText.setText(character.getCurrentInitiative());
+        initiativeText.setText("+" + character.getInitiativeModifier());
+    }
+
+    public void setHealthText()
+    {
+        currentHpText.setText(character.getCurrentHealth());
+        tempHpText.setText(character.getTempHP());
+    }
+
+    //true is healed, false is damage
+    public void updateCurrentHp(boolean healed, int amount)
+    {
+        if(healed)
+        {
+            character.heal(amount);
+        }
+        else
+        {
+            character.takeDamage(amount);
+        }
+    }
+
+//    public void changeInitiative(int newInit)
+//    {
+//        character.setCurrentInitiative(newInit);
+//    }
+//
+//    public void changeInitiativeMod(int newMod)
+//    {
+//        character.setInitiativeModifier(newMod);
+//    }
+//
+//    public void changeMaxHealth(int newMax)
+//    {
+//        character.setMaxHealth(newMax);
+//    }
+//
+//    public void changeArmorClass(int newAC)
+//    {
+//        character.setArmorClass(newAC);
+//    }
+//
+//    public void changeCharacterName(String newName)
+//    {
+//        character.setCharacterName(newName);
+//    }
 
     private void initializeViews()
     {
@@ -112,67 +244,4 @@ public class CharacterActivity extends AppCompatActivity {
     }
 
 
-    public void setNameText()
-    {
-        nameText.setText(character.getCharacterName());
-    }
-
-    public void setStatsText()
-    {
-        typeText.setText(character.getCharacterType());
-        armorText.setText(character.getArmorClass());
-        initiativeText.setText(character.getCurrentInitiative());
-        initiativeText.setText("+" + character.getInitiativeModifier());
-    }
-
-    public void setHealthText()
-    {
-        currentHpText.setText(character.getCurrentHealth());
-        tempHpText.setText(character.getTempHP());
-    }
-
-    //true is healed, false is damage
-    public void updateCurrentHp(boolean healed, int amount) throws Exception
-    {
-        if(healed)
-        {
-            character.heal(amount);
-        }
-        else
-        {
-            character.takeDamage(amount);
-        }
-    }
-
-    public void changeInitiative(int newInit)
-    {
-        character.setCurrentInitiative(newInit);
-    }
-
-    public void changeInitiativeMod(int newMod)
-    {
-        character.setInitiativeModifier(newMod);
-    }
-
-    //TODO handle changing max health when current isnt at full
-    public void changeMaxHealth(int newMax)
-    {
-        character.setMaxHealth(newMax);
-    }
-
-    public void changeArmorClass(int newAC)
-    {
-        character.setArmorClass(newAC);
-    }
-
-    public void changeCharacterName(String newName)
-    {
-        character.setCharacterName(newName);
-    }
-
-    public void buttonWatcher()
-    {
-        //TODO what here
-
-    }
 }

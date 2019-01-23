@@ -68,13 +68,13 @@ public abstract class Character implements Serializable
         }
     }
 
-    public void takeDamage(int damage) throws Exception
+    public void takeDamage(int damage)
     {
 
-        //don't want to damage for negatives cause thats weird reverse healing, and 0 damage is pointless
-        if(damage <= 0)
+        //don't want to damage for negatives cause thats weird reverse healing
+        if(damage < 0)
         {
-            throw new Exception();
+            damage = 0;
         }
         //if all damage goes into taking down the temp hp then just subtract from tempHp and done
         else if(temporaryHP > 0 && damage <= temporaryHP)
