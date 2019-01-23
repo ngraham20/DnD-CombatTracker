@@ -132,8 +132,8 @@ public abstract class Character implements Serializable
             //temporary hp isn't 0, so subtract it from damage, so later calculation will use leftover damage amt instead of passed in total
             if (temporaryHP > 0)
             {
-                temporaryHP = 0;
                 damage -= temporaryHP;
+                temporaryHP = 0;
             }
 
             int damagedHealth = currentHealth - damage;

@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Initiative"
+                    android:text="Calculated Initiative"
                     android:textAlignment="textEnd" />
 
                 <TextView
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="InitMod"
+                    android:text="Init Mod"
                     android:textAlignment="textEnd" />
 
                 <TextView
@@ -154,7 +154,8 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="Current HP"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tempHpTextDisp"
@@ -172,7 +173,8 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="Temp HP"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -294,8 +296,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Current Initiative Value"
-                    android:inputType="text" />
+                    android:hint="Initiative Roll"
+                    android:inputType="number" />
             </LinearLayout>
 
             <LinearLayout
@@ -319,6 +321,31 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Initiative Modifier"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/changeTempHPLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/changeTempHP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Set Temp HP" />
+
+                <EditText
+                    android:id="@+id/editTempHP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Temp HP"
                     android:inputType="number" />
 
             </LinearLayout>
@@ -399,5 +426,12 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"></LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
