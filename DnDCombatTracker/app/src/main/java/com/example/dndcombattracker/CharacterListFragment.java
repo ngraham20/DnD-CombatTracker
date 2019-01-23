@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class CharacterListFragment extends Fragment {
     private ArrayList<Character> mCharacters = new ArrayList<>();
 
     private Character dialogCharacter;
+    private CharacterAdapter mAdapter;
 
     private static final String TAG = "CharacterListFragment";
 
@@ -44,10 +46,10 @@ public class CharacterListFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_character_list, container, false);
         mRecyclerView = view.findViewById(R.id.recycler_view);
-        CharacterAdapter adapter = new CharacterAdapter(getContext(), mCharacters);
+        mAdapter = new CharacterAdapter(getContext(), mCharacters);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(mAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());
@@ -72,7 +74,7 @@ public class CharacterListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mCharacters = initDefaultCharacters();
+        //mCharacters = initDefaultCharacters();
     }
 
     private ArrayList<Character> initDefaultCharacters()
@@ -116,6 +118,7 @@ public class CharacterListFragment extends Fragment {
 
                         if(dialogCharacter!=null) {
                             dialogCharacter.setCharacterName(input.getText().toString());
+                            characterACDialog();
                         }
                     }
                 })
@@ -144,19 +147,6 @@ public class CharacterListFragment extends Fragment {
                 characterNameDialogue();
             }
         });
-        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, "onClick: Next");
-            }
-        })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d(TAG, "onClick: Cancel");
-                        cancel();
-                    }
-                });
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -164,19 +154,22 @@ public class CharacterListFragment extends Fragment {
 
     private void characterACDialog()
     {
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        final NumberPicker input = new NumberPicker(getContext());
+        input.setMaxValue(60);
+        input.setMinValue(1);
+        input.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(input);
-        builder.setTitle("Character Name");
+        builder.setTitle("Character AC");
         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, "onClick: Setting Character Name");
+                Log.d(TAG, "onClick: Setting Character AC");
 
                 if(dialogCharacter!=null) {
-                    dialogCharacter.setCharacterName(input.getText().toString());
+                    dialogCharacter.setArmorClass(input.getValue());
+                    characterHPDialog();
                 }
             }
         })
@@ -192,11 +185,92 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    private void characterHPDialog()
+    {
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(input);
+        builder.setTitle("Character HP");
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Setting Character HP");
+
+                if(dialogCharacter!=null) {
+                    dialogCharacter.setCurrentHealth(Integer.parseInt(input.getText().toString()));
+                    characterInitiativeModDialog();
+                }
+            }
+        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d(TAG, "onClick: Cancel");
+                        cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void characterInitiativeModDialog()
+    {
+        final NumberPicker input = new NumberPicker(getContext());
+        input.setMaxValue(12);
+        input.setMinValue(0);
+        input.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(input);
+        builder.setTitle("Character Initiative Mod");
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Setting Character Initiative Modifier");
+
+                if(dialogCharacter!=null) {
+                    dialogCharacter.setInitiativeModifier(input.getValue());
+                    // add character to list
+                    addCharacter(dialogCharacter);
+                    clearDialogCharacter();
+                }
+            }
+        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d(TAG, "onClick: Cancel");
+                        cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void addCharacter(Character character)
+    {
+        // copy the character and add it to list
+        Character newGuy = Character.copy(character);
+        mCharacters.add(newGuy);
+
+        // update the ui
+        mAdapter.notifyItemInserted(mCharacters.indexOf(newGuy));
+    }
+
     private void cancel()
     {
         // set all dialogue variables to null
-        dialogCharacter = null;
+        clearDialogCharacter();
 
+    }
+
+    private void clearDialogCharacter()
+    {
+        dialogCharacter = null;
     }
 
 }

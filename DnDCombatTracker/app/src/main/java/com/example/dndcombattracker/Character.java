@@ -29,6 +29,19 @@ public abstract class Character implements Serializable
         characterType = newType;
     }
 
+    public Character(Character other) {
+        this.temporaryHP = other.temporaryHP;
+        this.characterName = other.characterName;
+        this.armorClass = other.armorClass;
+        this.maxHealth = other.maxHealth;
+        this.currentHealth = other.currentHealth;
+        this.initiativeModifier = other.initiativeModifier;
+        this.currentInitiative = other.currentInitiative;
+        this.characterType = other.characterType;
+        this.successSaves = other.successSaves;
+        this.failSaves = other.failSaves;
+    }
+
     static public Character characterFactory(String type, String name, int ac, int hp, int initMod)
     {
         switch (type)
@@ -43,6 +56,24 @@ public abstract class Character implements Serializable
         return null;
     }
 
+    public static Character copy(Character character)
+    {
+        if(character instanceof Monster)
+        {
+            return new Monster((Monster)character);
+        }
+        if(character instanceof NPC)
+        {
+            return new NPC((NPC)character);
+        }
+        if(character instanceof PC)
+        {
+            return new PC((PC)character);
+        }
+        return null;
+    }
+
+
     public void resetSavingThrows()
     {
         Arrays.fill(successSaves, Boolean.FALSE);
@@ -54,7 +85,7 @@ public abstract class Character implements Serializable
             return temporaryHP;
         }
         else {
-            return -1;
+            return 0;
         }
     }
 

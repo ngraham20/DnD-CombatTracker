@@ -7,4 +7,10 @@ public class NPC extends Character
         super(name, newAC, newMaxHP, newInitMod, type.NONPLAYER);
 
     }
+
+    NPC(NPC npc)
+    {
+        super(npc);
+    }
+
 }

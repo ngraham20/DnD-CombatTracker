@@ -6,4 +6,9 @@ public class Monster extends Character
     {
         super(name, newAC, newMaxHP, newInitMod, type.MONSTER);
     }
+
+    Monster(Monster monster)
+    {
+        super(monster);
+    }
 }

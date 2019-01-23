@@ -6,4 +6,9 @@ public class PC extends Character
     {
         super(name, newAC, newMaxHP, newInitMod, type.PLAYER);
     }
+
+    PC(PC pc)
+    {
+        super(pc);
+    }
 }
