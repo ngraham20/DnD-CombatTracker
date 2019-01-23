@@ -30,19 +30,6 @@ public class Combat implements Serializable
         return characters.remove(doomedCharacter);
     }
 
-    public void addMultipleCopiesOfCharacter(Character character, int number)
-    {
-        for(int i = 0; i < number; i++)
-        {
-            characters.add(character);
-        }
-    }
-
-    public ArrayList<Character> getCharactersInCombat()
-    {
-        return characters;
-    }
-
     public ArrayList<Character> getCharacters() {
         return characters;
     }

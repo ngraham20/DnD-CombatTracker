@@ -92,10 +92,11 @@ public class CharacterListFragment extends Fragment {
 
     private void beginCharacterDeletionDialog()
     {
-
+        dialogCharacter = null;
+        deleteCharacterDialog();
     }
 
-    private void addCharacterDialog()
+    private void deleteCharacterDialog()
     {
 
         mDialogNames = new ArrayList<>();
@@ -107,17 +108,17 @@ public class CharacterListFragment extends Fragment {
 
         CharSequence[] input = mDialogNames.toArray(new CharSequence[0]);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setItems(input, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
                 mCharacters.remove(character);
-
-                mAdapter.notifyItemInserted(mCharacters.indexOf(character));
+                mAdapter.notifyItemRemoved(i);
+                mAdapter.notifyDataSetChanged();
             }
         });
-        builder.setTitle("Add Character");
+        builder.setTitle("Delete Character");
 
         AlertDialog dialog = builder.create();
         dialog.show();
