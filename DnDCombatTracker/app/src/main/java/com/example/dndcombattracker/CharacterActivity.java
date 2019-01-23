@@ -3,6 +3,7 @@ package com.example.dndcombattracker;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -54,6 +55,8 @@ public class CharacterActivity extends AppCompatActivity {
     private Button changeNameButton = (Button) findViewById(R.id.changeName);
     private EditText editName = (EditText) findViewById(R.id.editName);
 
+    //TODO add character's tempHp mods to class character, xml and here
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +64,23 @@ public class CharacterActivity extends AppCompatActivity {
 
         //TODO set actual character in here???
 
-        //TODO move initializations in here??
+        setNameText();
+        setHealthText();
+        setStatsText();
+        editName.setText(character.getCharacterName());
+        editInit.setText(character.getCurrentInitiative());
+        editInitMod.setText(character.getInitiativeModifier());
+        editAC.setText(character.getArmorClass());
+        editHp.setText(character.getCurrentHealth());
+
+        changeInitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editInit.getText().toString();
+
+            }
+        });
+
     }
 
     public void setNameText()
@@ -73,14 +92,14 @@ public class CharacterActivity extends AppCompatActivity {
     {
         typeText.setText(character.getCharacterType());
         armorText.setText(character.getArmorClass());
-        initiativeText.setText(character.getCurrentInitiative());
-        initiativeText.setText("+" + character.getInitiativeModifier());
+        initiativeText.setText(Integer.toString(character.getCurrentInitiative()));
+        initiativeText.setText("+" + Integer.toString(character.getInitiativeModifier()));
     }
 
     public void setHealthText()
     {
-        currentHpText.setText(character.getCurrentHealth());
-        tempHpText.setText(character.getTempHP());
+        currentHpText.setText("Current HP: " + Integer.toString(character.getCurrentHealth()));
+        tempHpText.setText("Temp HP: " + Integer.toString(character.getCurrentHealth()));
     }
 
     //true is healed, false is damage
