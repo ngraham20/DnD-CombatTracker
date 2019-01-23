@@ -16,6 +16,7 @@ public abstract class Character implements Serializable
     private boolean[] successSaves = new boolean[3];
     private boolean[] failSaves = new boolean[3];
     public enum type {MONSTER, NONPLAYER, PLAYER}
+    private boolean inCombat;
 
 
     public Character(String newName, int newAC, int newMaxHP, int newInitMod, type newType)
@@ -26,6 +27,7 @@ public abstract class Character implements Serializable
         currentHealth = maxHealth;
         initiativeModifier = newInitMod;
         characterType = newType;
+        inCombat = false;
     }
 
     public Character(Character other) {
@@ -53,6 +55,16 @@ public abstract class Character implements Serializable
                 return new PC(name, ac, hp, initMod);
         }
         return null;
+    }
+
+    public void addedToCombat()
+    {
+        inCombat = true;
+    }
+
+    public boolean getInCombat()
+    {
+        return inCombat;
     }
 
     public static Character copy(Character character)

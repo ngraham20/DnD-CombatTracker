@@ -34,6 +34,9 @@ public class CharacterListFragment extends Fragment {
 
     private static final String TAG = "CharacterListFragment";
 
+    ArrayList<String> mDialogNames;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,14 +53,25 @@ public class CharacterListFragment extends Fragment {
 
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        FloatingActionButton fab = view.findViewById(R.id.add_character_button);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton createFab = view.findViewById(R.id.add_character_button);
+        createFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "onClick: FAB Clicked");
+                Log.d(TAG, "onClick: CreateFAB Clicked");
                 Context context = v.getContext();
                 beginCharacterCreationDialog();
+            }
+        });
+
+        FloatingActionButton deleteFab = view.findViewById(R.id.delete_character_button);
+        deleteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(TAG, "onClick: DeleteFAB Clicked");
+                Context context = v.getContext();
+                beginCharacterDeletionDialog();
             }
         });
 
@@ -74,6 +88,40 @@ public class CharacterListFragment extends Fragment {
     {
         dialogCharacter = null;
         characterTypeDialog();
+    }
+
+    private void beginCharacterDeletionDialog()
+    {
+        dialogCharacter = null;
+        deleteCharacterDialog();
+    }
+
+    private void deleteCharacterDialog()
+    {
+
+        mDialogNames = new ArrayList<>();
+        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+        {
+            String name = character.getCharacterName();
+            mDialogNames.add(name);
+        }
+
+        CharSequence[] input = mDialogNames.toArray(new CharSequence[0]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setItems(input, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+                mCharacters.remove(character);
+                mAdapter.notifyItemRemoved(i);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setTitle("Delete Character");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void characterNameDialog()
