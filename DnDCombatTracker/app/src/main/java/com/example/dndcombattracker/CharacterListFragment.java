@@ -112,13 +112,40 @@ public class CharacterListFragment extends Fragment {
         builder.setItems(input, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
-                mCharacters.remove(character);
-                mAdapter.notifyItemRemoved(i);
-                mAdapter.notifyItemRangeChanged(i,mCharacters.size());
+
+                if(!character.getInCombat())
+                {
+                    mCharacters.remove(character);
+                    mAdapter.notifyItemRemoved(i);
+                    mAdapter.notifyItemRangeChanged(i,mCharacters.size());
+                }
+                else
+                {
+                    badCharacterDeleteDialog("Cannot delete characters currently in combat. Remove them and try again.");
+                }
+
+
             }
         });
         builder.setTitle("Delete Character");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void badCharacterDeleteDialog(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Warning");
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Bad Character Dialog");
+            }
+        });
 
         AlertDialog dialog = builder.create();
         dialog.show();

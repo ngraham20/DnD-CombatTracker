@@ -3,7 +3,7 @@ package com.example.dndcombattracker;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public abstract class Character implements Serializable
+public abstract class Character implements Serializable, Comparable
 {
     private int temporaryHP;
     private String characterName;
@@ -271,5 +271,9 @@ public abstract class Character implements Serializable
         this.maxHealth = maxHealth;
     }
 
-
+    @Override
+    public int compareTo(Object compareable) {
+        int compareInit = ((Character)compareable).getCurrentInitiative();
+        return compareInit-this.getCurrentInitiative();
+    }
 }

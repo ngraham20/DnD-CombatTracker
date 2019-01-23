@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CombatActivity extends AppCompatActivity {
 
@@ -90,6 +91,8 @@ public class CombatActivity extends AppCompatActivity {
                     mCombat.addCharacter(character);
                     mCharacters = mCombat.getCharacters();
                     mAdapter.notifyItemInserted(mCharacters.indexOf(character));
+                    Collections.sort(mCharacters);
+                    mAdapter.notifyDataSetChanged();
                 }
                 else if(mCharacters.contains(character))
                 {
@@ -131,6 +134,7 @@ public class CombatActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        Collections.sort(mCharacters);
         mAdapter.notifyDataSetChanged();
     }
 
