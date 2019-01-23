@@ -6,9 +6,11 @@ import java.util.ArrayList;
 public class Combat
 {
     private ArrayList<Character> characters;
+    private String name;
 
-    public Combat ()
+    public Combat (String name)
     {
+        this.name = name;
         characters = new ArrayList<Character>();
     }
 
@@ -35,10 +37,11 @@ public class Combat
         return characters;
     }
 
-    public Character getCharacter(int index)
-    {
-        return characters.get(index);
+    public ArrayList<Character> getCharacters() {
+        return characters;
     }
 
-
+    public String getName() {
+        return name;
+    }
 }

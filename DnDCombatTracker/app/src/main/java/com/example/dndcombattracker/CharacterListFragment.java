@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +33,8 @@ public class CharacterListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_character_list, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        DnDAdapter adapter = new DnDAdapter(getContext(), mCharacters);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        CharacterAdapter adapter = new CharacterAdapter(getContext(), mCharacters);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(adapter);
@@ -45,7 +44,7 @@ public class CharacterListFragment extends Fragment {
 
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.add_character_button);
+        FloatingActionButton fab = view.findViewById(R.id.add_character_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

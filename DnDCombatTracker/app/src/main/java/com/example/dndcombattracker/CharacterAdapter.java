@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,37 +15,37 @@ import java.util.ArrayList;
 
 // learned much of this from https://www.youtube.com/watch?v=Vyqz_-sJGFk
 
-public class DnDAdapter extends RecyclerView.Adapter<DnDAdapter.DnDViewHolder> {
+public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder> {
 
-    private static final String TAG = "DnDAdapter";
+    private static final String TAG = "CharacterAdapter";
 
-    private ArrayList<Character> mCharacters = new ArrayList<>();
+    private ArrayList<Character> mCharacters;
     private Context mContext;
 
-    public DnDAdapter(Context context, ArrayList<Character> mCharacters) {
+    public CharacterAdapter(Context context, ArrayList<Character> mCharacters) {
         this.mCharacters = mCharacters;
         this.mContext = context;
     }
 
     @NonNull
     @Override
-    public DnDViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_list_item, parent, false);
+                .inflate(R.layout.character_list_item, parent, false);
 
-        DnDViewHolder holder = new DnDViewHolder(view);
+        CharacterViewHolder holder = new CharacterViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DnDViewHolder dnDViewHolder, final int position) {
+    public void onBindViewHolder(@NonNull CharacterViewHolder characterViewHolder, final int position) {
         Log.d(TAG, "onBindViewHolder: called");
 
-        dnDViewHolder.character_name.setText(mCharacters.get(position).getCharacterName());
-        dnDViewHolder.character_ac.setText(Integer.toString(mCharacters.get(position).getArmorClass()));
-        dnDViewHolder.character_init.setText(Integer.toString(mCharacters.get(position).getCurrentInitiative()));
+        characterViewHolder.character_name.setText(mCharacters.get(position).getCharacterName());
+        characterViewHolder.character_ac.setText(Integer.toString(mCharacters.get(position).getArmorClass()));
+        characterViewHolder.character_init.setText(Integer.toString(mCharacters.get(position).getCurrentInitiative()));
 
-        dnDViewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        characterViewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mCharacters.get(position).getCharacterName());
@@ -62,7 +61,7 @@ public class DnDAdapter extends RecyclerView.Adapter<DnDAdapter.DnDViewHolder> {
         return mCharacters.size();
     }
 
-    public class DnDViewHolder extends RecyclerView.ViewHolder
+    public class CharacterViewHolder extends RecyclerView.ViewHolder
     {
 
         TextView character_ac;
@@ -70,7 +69,7 @@ public class DnDAdapter extends RecyclerView.Adapter<DnDAdapter.DnDViewHolder> {
         TextView character_init;
         ConstraintLayout parentLayout;
 
-        public DnDViewHolder(@NonNull View itemView) {
+        public CharacterViewHolder(@NonNull View itemView) {
             super(itemView);
             character_ac = itemView.findViewById(R.id.character_ac);
             character_name = itemView.findViewById(R.id.character_name);
