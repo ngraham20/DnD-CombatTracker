@@ -34,6 +34,9 @@ public class CharacterListFragment extends Fragment {
 
     private static final String TAG = "CharacterListFragment";
 
+    ArrayList<String> mDialogNames;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -90,6 +93,34 @@ public class CharacterListFragment extends Fragment {
     private void beginCharacterDeletionDialog()
     {
 
+    }
+
+    private void addCharacterDialog()
+    {
+
+        mDialogNames = new ArrayList<>();
+        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+        {
+            String name = character.getCharacterName();
+            mDialogNames.add(name);
+        }
+
+        CharSequence[] input = mDialogNames.toArray(new CharSequence[0]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(input, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+                mCharacters.remove(character);
+
+                mAdapter.notifyItemInserted(mCharacters.indexOf(character));
+            }
+        });
+        builder.setTitle("Add Character");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void characterNameDialog()

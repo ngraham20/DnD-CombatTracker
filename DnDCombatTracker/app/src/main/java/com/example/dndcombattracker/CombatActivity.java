@@ -85,6 +85,7 @@ public class CombatActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
                 mCombat.addCharacter(character);
+                character.addedToCombat();
                 mCharacters = mCombat.getCharacters();
                 mAdapter.notifyItemInserted(mCharacters.indexOf(character));
             }
