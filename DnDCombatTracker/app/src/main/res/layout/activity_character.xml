@@ -27,7 +27,7 @@
                 android:id="@+id/nameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="20dp"
+                android:layout_marginTop="70dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -37,7 +37,7 @@
                     android:layout_weight="1"
                     android:text="Character Name"
                     android:textAlignment="center"
-                    android:textSize="18sp" />
+                    android:textSize="24sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -54,7 +54,8 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="Char Type"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/armorClass"
@@ -63,7 +64,8 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="AC"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/currentInitiative"
@@ -72,7 +74,8 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="Initiative"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/initiativeMod"
@@ -81,12 +84,13 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="InitMod"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/MainStatsLayout"
+                android:id="@+id/MainStatsLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
@@ -137,12 +141,31 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/currentHpTextDisp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Current HP"
+                    android:textAlignment="viewEnd" />
+
+                <TextView
                     android:id="@+id/currentHP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Current HP" />
+                    android:text="Current HP"
+                    android:textAlignment="viewStart" />
+
+                <TextView
+                    android:id="@+id/tempHpTextDisp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Temp HP"
+                    android:textAlignment="textEnd" />
 
                 <TextView
                     android:id="@+id/tempHP"
@@ -150,7 +173,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Temp HP" />
+                    android:text="Temp HP"
+                    android:textAlignment="viewStart" />
             </LinearLayout>
 
             <LinearLayout
@@ -173,8 +197,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:hint="Amount"
                     android:inputType="number"
-                    android:text="Amount" />
+                    android:textAlignment="center" />
 
                 <Button
                     android:id="@+id/damage"
@@ -271,7 +296,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="Current Initiative"
+                    android:hint="Current Initiative Value"
                     android:inputType="text" />
             </LinearLayout>
 
@@ -295,8 +320,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="Current InitMod" />
+                    android:hint="Initiative Modifier"
+                    android:inputType="number" />
 
             </LinearLayout>
 
@@ -320,8 +345,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="Current Max HP"/>
+                    android:hint="Max HP"
+                    android:inputType="number" />
 
             </LinearLayout>
 
@@ -345,8 +370,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="Current AC" />
+                    android:hint="Armor Class"
+                    android:inputType="number" />
 
             </LinearLayout>
 
@@ -370,8 +395,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number"
-                    android:text="Current Name" />
+                    android:hint="Name"
+                    android:inputType="number" />
 
             </LinearLayout>
         </LinearLayout>

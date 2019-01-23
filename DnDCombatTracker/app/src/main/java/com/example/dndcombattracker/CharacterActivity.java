@@ -75,12 +75,10 @@ public class CharacterActivity extends AppCompatActivity {
         initializeViews();
 
         Log.d(TAG, "onCreate: Getting Intent");
-        Character character = (Character) getIntent().getSerializableExtra(CharacterAdapter.CHARACTER_EXTRA);
+        character = (Character) getIntent().getSerializableExtra(CharacterAdapter.CHARACTER_EXTRA);
 
         Log.d(TAG, "onCreate: Setting Text Displays");
-        setNameText();
         setStatsText();
-        setHealthText();
 
         Log.d(TAG, "onCreate: Watching Buttons");
         buttonWatcher();
@@ -97,6 +95,8 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int newInit = Integer.parseInt(editInit.getText().toString());
                 character.setCurrentInitiative(newInit);
+                setInitiativeText();
+
             }
         });
 
@@ -105,14 +105,24 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int newInitMod = Integer.parseInt(editInitMod.getText().toString());
                 character.setInitiativeModifier(newInitMod);
+                setInitModText();
             }
         });
 
         changeHPButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int oldMax = character.getMaxHealth();
+
                 int newHp = Integer.parseInt(editHp.getText().toString());
                 character.setMaxHealth(newHp);
+
+                if(character.getCurrentHealth() == oldMax)
+                {
+                    character.setCurrentHealth(newHp);
+                    setCurrentHealthText();
+                }
+
             }
         });
 
@@ -121,6 +131,7 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int newAC = Integer.parseInt(editAC.getText().toString());
                 character.setArmorClass(newAC);
+                setArmorText();
             }
         });
 
@@ -129,6 +140,7 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String newName = editName.getText().toString();
                 character.setCharacterName(newName);
+                setNameText();
             }
         });
     }
@@ -159,16 +171,43 @@ public class CharacterActivity extends AppCompatActivity {
 
     public void setStatsText()
     {
-        typeText.setText(character.getCharacterType());
-        armorText.setText(character.getArmorClass());
-        initiativeText.setText(character.getCurrentInitiative());
-        initiativeText.setText("+" + character.getInitiativeModifier());
+        setTypeText();
+        setArmorText();
+        setInitiativeText();
+        setInitModText();
+        setCurrentHealthText();
+        setTempHpText();
+        setNameText();
     }
 
-    public void setHealthText()
+    public void setTypeText()
     {
-        currentHpText.setText(character.getCurrentHealth());
-        tempHpText.setText(character.getTempHP());
+        typeText.setText(character.getCharacterType());
+    }
+
+    public void setArmorText()
+    {
+        armorText.setText(Integer.toString(character.getArmorClass()));
+    }
+
+    public void setInitiativeText()
+    {
+        initiativeText.setText(Integer.toString(character.getCurrentInitiative()));
+    }
+
+    public void setInitModText()
+    {
+        initModText.setText("+" + Integer.toString(character.getInitiativeModifier()));
+    }
+
+    public void setCurrentHealthText()
+    {
+        currentHpText.setText(Integer.toString(character.getCurrentHealth()));
+    }
+
+    public void setTempHpText()
+    {
+        tempHpText.setText(Integer.toString(character.getTempHP()));
     }
 
     //true is healed, false is damage
@@ -183,31 +222,6 @@ public class CharacterActivity extends AppCompatActivity {
             character.takeDamage(amount);
         }
     }
-
-//    public void changeInitiative(int newInit)
-//    {
-//        character.setCurrentInitiative(newInit);
-//    }
-//
-//    public void changeInitiativeMod(int newMod)
-//    {
-//        character.setInitiativeModifier(newMod);
-//    }
-//
-//    public void changeMaxHealth(int newMax)
-//    {
-//        character.setMaxHealth(newMax);
-//    }
-//
-//    public void changeArmorClass(int newAC)
-//    {
-//        character.setArmorClass(newAC);
-//    }
-//
-//    public void changeCharacterName(String newName)
-//    {
-//        character.setCharacterName(newName);
-//    }
 
     private void initializeViews()
     {
@@ -242,6 +256,5 @@ public class CharacterActivity extends AppCompatActivity {
         changeNameButton = (Button) findViewById(R.id.changeName);
         editName = (EditText) findViewById(R.id.editName);
     }
-
 
 }
