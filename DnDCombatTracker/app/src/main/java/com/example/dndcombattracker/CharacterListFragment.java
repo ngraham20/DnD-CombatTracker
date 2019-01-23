@@ -27,7 +27,7 @@ public class CharacterListFragment extends Fragment {
     //private final Context context = this;
     View view;
     private RecyclerView mRecyclerView;
-    private ArrayList<Character> mCharacters = new ArrayList<>();
+    public static ArrayList<Character> mCharacters;
 
     private Character dialogCharacter;
     private CharacterAdapter mAdapter;
@@ -67,19 +67,7 @@ public class CharacterListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mCharacters = initDefaultCharacters();
-    }
-
-    private ArrayList<Character> initDefaultCharacters()
-    {
-        ArrayList<Character> characters = new ArrayList<>();
-        characters.add(new PC("Oberon", 19, 125, 5));
-        characters.add(new PC("Aeon", 15, 125, 5));
-        characters.add(new Monster("Medusa", 25, 1025, 9));
-        characters.add(new Monster("Dwarfish Cult Leader", 19, 337, 5));
-
-        return characters;
+        mCharacters = CharacterMasterList.getInstance().getmCharacters();
     }
 
     private void beginCharacterCreationDialog()

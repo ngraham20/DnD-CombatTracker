@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder> {
 
-    public final static String CHARACTER_EXTRA = "DnDCombatTracker.character";
+    public final static String CHARACTER_EXTRA = "DnDCombatTracker.characterIndex";
     private static final String TAG = "CharacterAdapter";
 
     private ArrayList<Character> mCharacters;
@@ -56,7 +56,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
                 Toast.makeText(mContext,character.getCharacterName(), Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(mContext, CharacterActivity.class);
-                intent.putExtra(CHARACTER_EXTRA, character);
+                intent.putExtra(CHARACTER_EXTRA, position);
 
                 mContext.startActivity(intent);
             }

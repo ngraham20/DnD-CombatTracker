@@ -61,18 +61,7 @@ public class CombatListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mCombats = initDefaultCombat();
-    }
-
-    private ArrayList<Combat> initDefaultCombat()
-    {
-        ArrayList<Combat> combats = new ArrayList<>();
-        Combat combat = new Combat("Mountain Crypt");
-        combat.addCharacter(new PC("Grahnath", 19, 135, 5));
-        combat.addCharacter(new PC("Kelly", 12, 100, 6));
-        combat.addCharacter(new Monster("Gnome King", 20, 637, 7));
-        combats.add(combat);
-        return combats;
+       mCombats = CombatMasterList.getInstance().getmCombats();
     }
 
     private void clearCombatDialog()

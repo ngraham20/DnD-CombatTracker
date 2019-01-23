@@ -19,9 +19,9 @@ import java.util.ArrayList;
 public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatViewHolder> {
 
     private static final String TAG = "combatAdapter";
-    public static final String COMBAT_EXTRA = "DnDCombatTracker.combat";
+    public static final String COMBAT_EXTRA = "DnDCombatTracker.combatIndex";
 
-    private ArrayList<Combat> mcombats = new ArrayList<>();
+    private ArrayList<Combat> mcombats;
     private Context mContext;
 
     public CombatAdapter(Context context, ArrayList<Combat> mcombats) {
@@ -45,7 +45,6 @@ public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatView
         combatViewHolder.combat_name.setText(mcombats.get(position).getName());
         combatViewHolder.combat_character_count.setText(Integer.toString(mcombats.get(position).getCharacters().size()));
 
-
         combatViewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +55,7 @@ public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatView
                 Toast.makeText(mContext, combat.getName(), Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(mContext, CombatActivity.class);
-                intent.putExtra(CombatAdapter.COMBAT_EXTRA, combat);
+                intent.putExtra(CombatAdapter.COMBAT_EXTRA, position);
 
                 mContext.startActivity(intent);
             }

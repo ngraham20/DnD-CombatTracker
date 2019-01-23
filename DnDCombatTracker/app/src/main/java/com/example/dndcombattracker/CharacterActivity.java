@@ -76,7 +76,8 @@ public class CharacterActivity extends AppCompatActivity {
         initializeViews();
 
         Log.d(TAG, "onCreate: Getting Intent");
-        character = (Character) getIntent().getSerializableExtra(CharacterAdapter.CHARACTER_EXTRA);
+        int index = (int) getIntent().getSerializableExtra(CharacterAdapter.CHARACTER_EXTRA);
+        character = CharacterMasterList.getInstance().getmCharacters().get(index);
 
         Log.d(TAG, "onCreate: Setting Text Displays");
         setStatsText();
