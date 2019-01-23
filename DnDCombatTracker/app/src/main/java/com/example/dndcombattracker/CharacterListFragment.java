@@ -1,7 +1,6 @@
 package com.example.dndcombattracker;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,18 +11,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.NumberPicker;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -63,7 +57,7 @@ public class CharacterListFragment extends Fragment {
 
                 Log.d(TAG, "onClick: FAB Clicked");
                 Context context = v.getContext();
-                beginCharacterCreationDialogue();
+                beginCharacterCreationDialog();
             }
         });
 
@@ -97,13 +91,13 @@ public class CharacterListFragment extends Fragment {
         return characters;
     }
 
-    private void beginCharacterCreationDialogue()
+    private void beginCharacterCreationDialog()
     {
         dialogCharacter = null;
         characterTypeDialog();
     }
 
-    private void characterNameDialogue()
+    private void characterNameDialog()
     {
         final EditText input = new EditText(getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -144,7 +138,7 @@ public class CharacterListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogCharacter = Character.characterFactory(items[i].toString(), null, -1,-1,-1);
-                characterNameDialogue();
+                characterNameDialog();
             }
         });
 
@@ -263,7 +257,7 @@ public class CharacterListFragment extends Fragment {
 
     private void cancel()
     {
-        // set all dialogue variables to null
+        // set all dialog variables to null
         clearDialogCharacter();
 
     }
