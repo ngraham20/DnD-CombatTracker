@@ -29,6 +29,20 @@ public abstract class Character implements Serializable
         characterType = newType;
     }
 
+    static public Character characterFactory(String type, String name, int ac, int hp, int initMod)
+    {
+        switch (type)
+        {
+            case "Monster":
+                return new Monster(name, ac, hp, initMod);
+            case "NPC":
+                return new NPC(name, ac, hp, initMod);
+            case "PC":
+                return new PC(name, ac, hp, initMod);
+        }
+        return null;
+    }
+
     public void resetSavingThrows()
     {
         Arrays.fill(successSaves, Boolean.FALSE);

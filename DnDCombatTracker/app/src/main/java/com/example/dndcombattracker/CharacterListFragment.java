@@ -1,7 +1,9 @@
 package com.example.dndcombattracker;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,12 +34,9 @@ public class CharacterListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArrayList<Character> mCharacters = new ArrayList<>();
 
+    private Character dialogCharacter;
+
     private static final String TAG = "CharacterListFragment";
-
-    public CharacterListFragment()
-    {
-
-    }
 
     @Nullable
     @Override
@@ -56,26 +59,9 @@ public class CharacterListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // custom dialog
-                final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.custom);
-                dialog.setTitle("Title...");
-
-                // set the custom dialog components - text, image and button
-                TextView text = (TextView) dialog.findViewById(R.id.text);
-                text.setText("Android custom dialog example!");
-
-
-                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-                dialogButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
+                Log.d(TAG, "onClick: FAB Clicked");
+                Context context = v.getContext();
+                beginCharacterCreationDialogue();
             }
         });
 
@@ -108,4 +94,109 @@ public class CharacterListFragment extends Fragment {
 
         return characters;
     }
+
+    private void beginCharacterCreationDialogue()
+    {
+        dialogCharacter = null;
+        characterTypeDialog();
+    }
+
+    private void characterNameDialogue()
+    {
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(input);
+        builder.setTitle("Character Name");
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d(TAG, "onClick: Setting Character Name");
+
+                        if(dialogCharacter!=null) {
+                            dialogCharacter.setCharacterName(input.getText().toString());
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d(TAG, "onClick: Cancel");
+                        cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void characterTypeDialog()
+    {
+        final CharSequence[] items = {"Monster","NPC","PC"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Character Type");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogCharacter = Character.characterFactory(items[i].toString(), null, -1,-1,-1);
+                characterNameDialogue();
+            }
+        });
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Next");
+            }
+        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d(TAG, "onClick: Cancel");
+                        cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void characterACDialog()
+    {
+        final EditText input = new EditText(getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(input);
+        builder.setTitle("Character Name");
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Setting Character Name");
+
+                if(dialogCharacter!=null) {
+                    dialogCharacter.setCharacterName(input.getText().toString());
+                }
+            }
+        })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d(TAG, "onClick: Cancel");
+                        cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void cancel()
+    {
+        // set all dialogue variables to null
+        dialogCharacter = null;
+
+    }
+
 }
