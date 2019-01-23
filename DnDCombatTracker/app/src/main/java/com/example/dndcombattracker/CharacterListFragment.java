@@ -68,7 +68,7 @@ public class CharacterListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //mCharacters = initDefaultCharacters();
+        mCharacters = initDefaultCharacters();
     }
 
     private ArrayList<Character> initDefaultCharacters()
