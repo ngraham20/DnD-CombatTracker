@@ -1,9 +1,10 @@
 package com.example.dndcombattracker;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public abstract class Character
+public abstract class Character implements Serializable
 {
     private int temporaryHP;
     private String characterName;

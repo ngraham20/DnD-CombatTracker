@@ -41,6 +41,7 @@ public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatView
         Log.d(TAG, "onBindViewHolder: called");
 
         combatViewHolder.combat_name.setText(mcombats.get(position).getName());
+        combatViewHolder.combat_character_count.setText(Integer.toString(mcombats.get(position).getCharacters().size()));
 
 
         combatViewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +63,13 @@ public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatView
     public class CombatViewHolder extends RecyclerView.ViewHolder
     {
         TextView combat_name;
+        TextView combat_character_count;
         ConstraintLayout parentLayout;
 
         public CombatViewHolder(@NonNull View itemView) {
             super(itemView);
             combat_name = itemView.findViewById(R.id.combat_name);
+            combat_character_count = itemView.findViewById(R.id.combat_character_count);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }

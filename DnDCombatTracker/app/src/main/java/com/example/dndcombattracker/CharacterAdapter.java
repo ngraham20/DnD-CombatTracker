@@ -1,6 +1,7 @@
 package com.example.dndcombattracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder> {
 
+    public final static String CHARACTER_EXTRA = "DnDCombatTracker.character";
     private static final String TAG = "CharacterAdapter";
 
     private ArrayList<Character> mCharacters;
@@ -48,10 +50,15 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
         characterViewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on: " + mCharacters.get(position).getCharacterName());
+                Character character = mCharacters.get(position);
+                Log.d(TAG, "onClick: clicked on: " + character.getCharacterName());
 
-                Toast.makeText(mContext, mCharacters.get(position).getCharacterName(), Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(mContext,character.getCharacterName(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(v.getContext(), CharacterActivity.class);
+                intent.putExtra(CHARACTER_EXTRA, character);
+
+                mContext.startActivity(intent);
             }
         });
     }
