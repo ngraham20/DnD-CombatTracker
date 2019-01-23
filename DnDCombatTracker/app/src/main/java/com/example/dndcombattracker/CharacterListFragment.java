@@ -182,7 +182,7 @@ public class CharacterListFragment extends Fragment {
     private void characterHPDialog()
     {
         final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(input);
@@ -193,7 +193,9 @@ public class CharacterListFragment extends Fragment {
                 Log.d(TAG, "onClick: Setting Character HP");
 
                 if(dialogCharacter!=null) {
-                    dialogCharacter.setCurrentHealth(Integer.parseInt(input.getText().toString()));
+                    int health = Integer.parseInt(input.getText().toString());
+                    dialogCharacter.setMaxHealth(health);
+                    dialogCharacter.setCurrentHealth(health);
                     characterInitiativeModDialog();
                 }
             }
