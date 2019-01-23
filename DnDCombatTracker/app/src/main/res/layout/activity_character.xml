@@ -19,7 +19,8 @@
             android:id="@+id/overall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusableInTouchMode="true">
 
             <LinearLayout
                 android:id="@+id/nameLayout"
@@ -101,7 +102,7 @@
                     android:textAlignment="textEnd" />
 
                 <TextView
-                    android:id="@+id/currentInitiative"
+                    android:id="@+id/baseInitiative"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"

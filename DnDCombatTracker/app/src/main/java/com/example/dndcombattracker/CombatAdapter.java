@@ -1,6 +1,7 @@
 package com.example.dndcombattracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatViewHolder> {
 
     private static final String TAG = "combatAdapter";
+    public static final String COMBAT_EXTRA = "DnDCombatTracker.combat";
 
     private ArrayList<Combat> mcombats = new ArrayList<>();
     private Context mContext;
@@ -49,8 +51,14 @@ public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatView
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mcombats.get(position).getName());
 
-                Toast.makeText(mContext, mcombats.get(position).getName(), Toast.LENGTH_SHORT)
-                        .show();
+                Combat combat = mcombats.get(position);
+
+                Toast.makeText(mContext, combat.getName(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(mContext, CombatActivity.class);
+                intent.putExtra(CombatAdapter.COMBAT_EXTRA, combat);
+
+                mContext.startActivity(intent);
             }
         });
     }

@@ -55,7 +55,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
                 Toast.makeText(mContext,character.getCharacterName(), Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(v.getContext(), CharacterActivity.class);
+                Intent intent = new Intent(mContext, CharacterActivity.class);
                 intent.putExtra(CHARACTER_EXTRA, character);
 
                 mContext.startActivity(intent);

@@ -1,9 +1,10 @@
 package com.example.dndcombattracker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Combat
+public class Combat implements Serializable
 {
     private ArrayList<Character> characters;
     private String name;
@@ -12,6 +13,11 @@ public class Combat
     {
         this.name = name;
         characters = new ArrayList<Character>();
+    }
+
+    public Combat(Combat other) {
+        this.characters = other.characters;
+        this.name = other.name;
     }
 
     public void addCharacter(Character character)
@@ -43,5 +49,9 @@ public class Combat
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
