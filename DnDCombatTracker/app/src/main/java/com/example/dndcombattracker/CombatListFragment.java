@@ -28,6 +28,7 @@ public class CombatListFragment extends Fragment {
     private CombatAdapter mAdapter;
 
     private Combat mDialogCombat;
+    private ArrayList<String> mDialogNames;
 
     private static final String TAG = "CombatListFragment";
 
@@ -51,6 +52,14 @@ public class CombatListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 beginCombatDialog();
+            }
+        });
+
+        FloatingActionButton deleteFab = view.findViewById(R.id.delete_combat_button);
+        deleteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCombatDialog();
             }
         });
 
@@ -122,6 +131,39 @@ public class CombatListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void deleteCombatDialog()
+    {
+        mDialogNames = new ArrayList<>();
+        for(Combat combat : mCombats)
+        {
+            String name = combat.getName();
+            mDialogNames.add(name);
+        }
+
+        CharSequence[] input = mDialogNames.toArray(new CharSequence[0]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setItems(input, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Combat combat = CombatMasterList.getInstance().getmCombats().get(i);
+
+                for(Character character: combat.getCharacters())
+                {
+                    character.setInCombat(false);
+                }
+
+                mCombats.remove(combat);
+                mAdapter.notifyItemRemoved(i);
+                mAdapter.notifyItemRangeChanged(i,mCombats.size());
+            }
+        });
+        builder.setTitle("Delete Character");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

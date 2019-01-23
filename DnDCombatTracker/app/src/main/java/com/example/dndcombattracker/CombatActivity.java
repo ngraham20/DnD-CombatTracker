@@ -60,7 +60,7 @@ public class CombatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "onClick: FAB Clicked");
+                Log.d(TAG, "onClick: Add FAB Clicked");
                addCharacterDialog();
 
             }
@@ -69,7 +69,6 @@ public class CombatActivity extends AppCompatActivity {
 
     private void addCharacterDialog()
     {
-
         mDialogNames = new ArrayList<>();
         for(Character character : CharacterMasterList.getInstance().getmCharacters())
         {
@@ -87,13 +86,18 @@ public class CombatActivity extends AppCompatActivity {
 
                 if(!character.getInCombat()) // if this character is not in a combat
                 {
+                    character.setInCombat(true);
                     mCombat.addCharacter(character);
                     mCharacters = mCombat.getCharacters();
                     mAdapter.notifyItemInserted(mCharacters.indexOf(character));
                 }
+                else if(mCharacters.contains(character))
+                {
+                    badCharacterAddDialog("Characters cannot be added to the same combat more than once.");
+                }
                 else
                 {
-                    badCharacterAddDialog("Character cannot be in more than one combat");
+                    badCharacterAddDialog("Characters cannot be added to more than one combat.");
                 }
             }
         });

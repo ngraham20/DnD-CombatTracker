@@ -67,6 +67,10 @@ public abstract class Character implements Serializable
         return inCombat;
     }
 
+    public void setInCombat(boolean inCombat) {
+        this.inCombat = inCombat;
+    }
+
     public static Character copy(Character character)
     {
         if(character instanceof Monster)

@@ -115,7 +115,7 @@ public class CharacterListFragment extends Fragment {
                 Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
                 mCharacters.remove(character);
                 mAdapter.notifyItemRemoved(i);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyItemRangeChanged(i,mCharacters.size());
             }
         });
         builder.setTitle("Delete Character");
