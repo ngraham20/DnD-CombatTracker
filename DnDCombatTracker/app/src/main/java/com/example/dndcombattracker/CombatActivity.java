@@ -107,7 +107,7 @@ public class CombatActivity extends AppCompatActivity {
                 Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
 
                 mCombat.deleteCharacter(character);
-                // TODO remove from combat
+                character.setInCombat(false);
                 mAdapter.notifyItemRemoved(i);
                 mAdapter.notifyDataSetChanged();
             }
