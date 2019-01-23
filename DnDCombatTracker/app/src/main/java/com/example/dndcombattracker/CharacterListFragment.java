@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class CharacterListFragment extends Fragment {
 
-    private final Context context = this;
+    //private final Context context = this;
     View view;
     private RecyclerView mRecyclerView;
     private ArrayList<Character> mCharacters = new ArrayList<>();
@@ -76,8 +76,6 @@ public class CharacterListFragment extends Fragment {
                 });
 
                 dialog.show();
-            }
-        });
             }
         });
 
