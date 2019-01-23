@@ -49,6 +49,9 @@ public class CharacterActivity extends AppCompatActivity {
     private Button changeInitModButton;
     private EditText editInitMod;
 
+    private Button changeTempHpButton;
+    private EditText editTempHp;
+
     private Button changeHPButton;
     private EditText editHp;
 
@@ -58,7 +61,8 @@ public class CharacterActivity extends AppCompatActivity {
     private Button changeNameButton;
     private EditText editName;
 
-    public CharacterActivity() {
+    public CharacterActivity()
+    {
     }
 
     @Override
@@ -106,6 +110,15 @@ public class CharacterActivity extends AppCompatActivity {
                 int newInitMod = Integer.parseInt(editInitMod.getText().toString());
                 character.setInitiativeModifier(newInitMod);
                 setInitModText();
+            }
+        });
+
+        changeTempHpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int newTemp = Integer.parseInt(editTempHp.getText().toString());
+                character.setTemporaryHP(newTemp);
+                setTempHpText();
             }
         });
 
@@ -251,6 +264,8 @@ public class CharacterActivity extends AppCompatActivity {
         editInit = (EditText) findViewById(R.id.editInitiative);
         changeInitModButton = (Button) findViewById(R.id.changeInitMod);
         editInitMod = (EditText) findViewById(R.id.editInitMod);
+        changeTempHpButton = (Button) findViewById(R.id.changeTempHP);
+        editTempHp = (EditText) findViewById(R.id.editTempHP);
         changeHPButton = (Button) findViewById(R.id.changeMaxHP);
         editHp = (EditText) findViewById(R.id.editHP);
         changeACButton = (Button) findViewById(R.id.changeAC);
