@@ -100,28 +100,43 @@ public class CharacterActivity extends AppCompatActivity {
         changeInitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newInit = Integer.parseInt(editInit.getText().toString());
-                character.setBaseInitiative(newInit);
-                setInitiativeText();
-
+                boolean containsValue = !((editInit.getText().toString()).equals(""));
+                if(containsValue)
+                {
+                    int newInit = Integer.parseInt(editInit.getText().toString());
+                    character.setBaseInitiative(newInit);
+                    setInitiativeText();
+                    editInit.setText("");
+                }
             }
         });
 
         changeInitModButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newInitMod = Integer.parseInt(editInitMod.getText().toString());
-                character.setInitiativeModifier(newInitMod);
-                setInitModText();
+                boolean containsValue = !((editInitMod.getText().toString()).equals(""));
+                if(containsValue){
+                    int newInitMod = Integer.parseInt(editInitMod.getText().toString());
+                    character.setInitiativeModifier(newInitMod);
+                    setInitModText();
+                    setInitiativeText();
+                    editInitMod.setText("");
+                }
+
             }
         });
 
         changeTempHpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newTemp = Integer.parseInt(editTempHp.getText().toString());
-                character.setTemporaryHP(newTemp);
-                setTempHpText();
+                boolean containsValue = !((editTempHp.getText().toString()).equals(""));
+                if(containsValue)
+                {
+                    int newTemp = Integer.parseInt(editTempHp.getText().toString());
+                    character.setTemporaryHP(newTemp);
+                    setTempHpText();
+                    editTempHp.setText("");
+                }
             }
         });
 
@@ -130,13 +145,18 @@ public class CharacterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int oldMax = character.getMaxHealth();
 
-                int newHp = Integer.parseInt(editHp.getText().toString());
-                character.setMaxHealth(newHp);
-
-                if(character.getCurrentHealth() == oldMax)
+                boolean containsValue = !((editHp.getText().toString()).equals(""));
+                if(containsValue)
                 {
-                    character.setCurrentHealth(newHp);
-                    setCurrentHealthText();
+                    int newHp = Integer.parseInt(editHp.getText().toString());
+                    character.setMaxHealth(newHp);
+
+                    if(character.getCurrentHealth() == oldMax)
+                    {
+                        character.setCurrentHealth(newHp);
+                        setCurrentHealthText();
+                        editHp.setText("");
+                    }
                 }
 
             }
@@ -145,18 +165,29 @@ public class CharacterActivity extends AppCompatActivity {
         changeACButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int newAC = Integer.parseInt(editAC.getText().toString());
-                character.setArmorClass(newAC);
-                setArmorText();
+                boolean containsValue = !((editAC.getText().toString()).equals(""));
+                if(containsValue)
+                {
+                    int newAC = Integer.parseInt(editAC.getText().toString());
+                    character.setArmorClass(newAC);
+                    setArmorText();
+                    editAC.setText("");
+                }
             }
         });
 
         changeNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newName = editName.getText().toString();
-                character.setCharacterName(newName);
-                setNameText();
+                boolean containsValue = !((editName.getText().toString()).equals(""));
+                if(containsValue)
+                {
+                    String newName = editName.getText().toString();
+                    character.setCharacterName(newName);
+                    setNameText();
+                    editName.setText("");
+                }
+
             }
         });
     }
@@ -175,10 +206,15 @@ public class CharacterActivity extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            int amount = Integer.parseInt(healthEdit.getText().toString());
-            activity.updateCurrentHp(type, amount);
-            setTempHpText();
-            setCurrentHealthText();
+            boolean containsValue = !((healthEdit.getText().toString()).equals(""));
+            if(containsValue)
+            {
+                int amount = Integer.parseInt(healthEdit.getText().toString());
+                activity.updateCurrentHp(type, amount);
+                setTempHpText();
+                setCurrentHealthText();
+            }
+
         }
     }
 

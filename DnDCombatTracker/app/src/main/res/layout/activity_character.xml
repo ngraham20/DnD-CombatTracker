@@ -297,7 +297,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Initiative Roll"
-                    android:inputType="text" />
+                    android:inputType="number" />
             </LinearLayout>
 
             <LinearLayout
@@ -429,7 +429,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="715dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp"></LinearLayout>
