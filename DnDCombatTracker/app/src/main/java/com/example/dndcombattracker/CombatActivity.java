@@ -31,6 +31,8 @@ public class CombatActivity extends AppCompatActivity {
     Character mDialogCharacter;
     ArrayList<String> mDialogNames;
 
+    private Character dialogCharacter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,54 @@ public class CombatActivity extends AppCompatActivity {
 
             }
         });
+
+        FloatingActionButton deleteFab = findViewById(R.id.delete_character_button);
+        deleteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(TAG, "onClick: DeleteFAB Clicked");
+                Context context = v.getContext();
+                beginCharacterDeletionDialog();
+            }
+        });
+
+    }
+
+    private void beginCharacterDeletionDialog()
+    {
+        dialogCharacter = null;
+        deleteCharacterDialog();
+    }
+
+    private void deleteCharacterDialog()
+    {
+
+        mDialogNames = new ArrayList<>();
+        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+        {
+            String name = character.getCharacterName();
+            mDialogNames.add(name);
+        }
+
+        CharSequence[] input = mDialogNames.toArray(new CharSequence[0]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(input, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+
+                mCombat.deleteCharacter(character);
+                // TODO remove from combat
+                mAdapter.notifyItemRemoved(i);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setTitle("Delete Character");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void addCharacterDialog()
