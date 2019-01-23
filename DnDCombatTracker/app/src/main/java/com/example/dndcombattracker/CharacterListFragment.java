@@ -74,19 +74,10 @@ public class CharacterListFragment extends Fragment {
     private ArrayList<Character> initDefaultCharacters()
     {
         ArrayList<Character> characters = new ArrayList<>();
-        characters.add(new PC("Player1", 19, 125, 5));
-        characters.add(new PC("Player2", 19, 125, 5));
-        characters.add(new PC("Player3", 19, 125, 5));
-        characters.add(new PC("Player4", 19, 125, 5));
-        characters.add(new PC("Player5", 19, 125, 5));
-        characters.add(new PC("Player6", 19, 125, 5));
-        characters.add(new PC("Player7", 19, 125, 5));
-        characters.add(new PC("Player8", 19, 125, 5));
-        characters.add(new PC("Player9", 19, 125, 5));
-        characters.add(new PC("Player10", 19, 125, 5));
-        characters.add(new PC("Player11", 19, 125, 5));
-        characters.add(new PC("Player12", 19, 125, 5));
-        characters.add(new PC("Player13", 19, 125, 5));
+        characters.add(new PC("Oberon", 19, 125, 5));
+        characters.add(new PC("Aeon", 15, 125, 5));
+        characters.add(new Monster("Medusa", 25, 1025, 9));
+        characters.add(new Monster("Dwarfish Cult Leader", 19, 337, 5));
 
         return characters;
     }
@@ -222,7 +213,7 @@ public class CharacterListFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(input);
         builder.setTitle("Character Initiative Mod");
-        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "onClick: Setting Character Initiative Modifier");

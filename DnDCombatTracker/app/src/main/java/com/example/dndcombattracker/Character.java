@@ -1,7 +1,6 @@
 package com.example.dndcombattracker;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public abstract class Character implements Serializable
@@ -12,7 +11,7 @@ public abstract class Character implements Serializable
     private int maxHealth;
     private int currentHealth;
     private int initiativeModifier;
-    private int currentInitiative;
+    private int baseInitiative;
     private type characterType;
     private boolean[] successSaves = new boolean[3];
     private boolean[] failSaves = new boolean[3];
@@ -36,7 +35,7 @@ public abstract class Character implements Serializable
         this.maxHealth = other.maxHealth;
         this.currentHealth = other.currentHealth;
         this.initiativeModifier = other.initiativeModifier;
-        this.currentInitiative = other.currentInitiative;
+        this.baseInitiative = other.baseInitiative;
         this.characterType = other.characterType;
         this.successSaves = other.successSaves;
         this.failSaves = other.failSaves;
@@ -206,7 +205,7 @@ public abstract class Character implements Serializable
     }
 
     public int getCurrentInitiative() {
-        return currentInitiative;
+        return baseInitiative + initiativeModifier;
     }
 
     public int getInitiativeModifier() {
@@ -244,8 +243,8 @@ public abstract class Character implements Serializable
         this.characterType = characterType;
     }
 
-    public void setCurrentInitiative(int currentInitiative) {
-        this.currentInitiative = currentInitiative;
+    public void setBaseInitiative(int baseInitiative) {
+        this.baseInitiative = baseInitiative;
     }
 
     public void setInitiativeModifier(int initiativeModifier) {

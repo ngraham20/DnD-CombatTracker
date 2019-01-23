@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -83,6 +84,8 @@ public class CharacterActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: Watching Buttons");
         buttonWatcher();
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
     }
 
     public void buttonWatcher()
@@ -94,7 +97,7 @@ public class CharacterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int newInit = Integer.parseInt(editInit.getText().toString());
-                character.setCurrentInitiative(newInit);
+                character.setBaseInitiative(newInit);
                 setInitiativeText();
 
             }
@@ -230,7 +233,7 @@ public class CharacterActivity extends AppCompatActivity {
         nameText = (TextView) findViewById(R.id.characterName);
         typeText = (TextView) findViewById(R.id.characterType);
         armorText = (TextView) findViewById(R.id.armorClass);
-        initiativeText = (TextView) findViewById(R.id.currentInitiative);
+        initiativeText = (TextView) findViewById(R.id.baseInitiative);
         initModText = (TextView) findViewById(R.id.initiativeMod);
         typeTextDisplay = (TextView) findViewById(R.id.charTypeDisplay);
         armorTextDisplay = (TextView) findViewById(R.id.armorClassDisplay);
