@@ -84,9 +84,17 @@ public class CombatActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
-                mCombat.addCharacter(character);
-                mCharacters = mCombat.getCharacters();
-                mAdapter.notifyItemInserted(mCharacters.indexOf(character));
+
+                if(!character.getInCombat()) // if this character is not in a combat
+                {
+                    mCombat.addCharacter(character);
+                    mCharacters = mCombat.getCharacters();
+                    mAdapter.notifyItemInserted(mCharacters.indexOf(character));
+                }
+                else
+                {
+                    badCharacterAddDialog("Character cannot be in more than one combat");
+                }
             }
         });
         builder.setTitle("Add Character");
@@ -95,9 +103,31 @@ public class CombatActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void badCharacterAddDialog(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Warning");
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                    Log.d(TAG, "onClick: Bad Character Dialog");
+                }
+            });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private void cancel()
     {
         mDialogCharacter = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
     }
 
 }

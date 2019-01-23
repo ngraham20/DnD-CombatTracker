@@ -248,4 +248,9 @@ public class CharacterListFragment extends Fragment {
         dialogCharacter = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+    }
 }
