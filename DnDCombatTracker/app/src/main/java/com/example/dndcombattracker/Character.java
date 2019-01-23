@@ -148,7 +148,6 @@ public abstract class Character implements Serializable
                 currentHealth = damagedHealth;
             }
 
-            currentHealth -= damage;
         }
 
 

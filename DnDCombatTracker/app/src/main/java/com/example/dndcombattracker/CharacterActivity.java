@@ -161,6 +161,8 @@ public class CharacterActivity extends AppCompatActivity {
         {
             int amount = Integer.parseInt(healthEdit.getText().toString());
             activity.updateCurrentHp(type, amount);
+            setTempHpText();
+            setCurrentHealthText();
         }
     }
 

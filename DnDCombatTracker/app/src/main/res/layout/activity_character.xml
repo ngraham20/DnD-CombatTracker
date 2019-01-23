@@ -48,14 +48,32 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/charTypeDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Char Type"
+                    android:textAlignment="textEnd" />
+
+                <TextView
                     android:id="@+id/characterType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="Char Type"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/armorClassDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="AC"
+                    android:textAlignment="textEnd" />
 
                 <TextView
                     android:id="@+id/armorClass"
@@ -64,27 +82,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="AC"
-                    android:textAlignment="center"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/currentInitiative"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="Initiative"
-                    android:textAlignment="center"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/initiativeMod"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="InitMod"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -97,31 +95,23 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/charTypeDisplay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="Char Type"
-                    android:textAlignment="center" />
-
-                <TextView
-                    android:id="@+id/armorClassDisplay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:text="AC"
-                    android:textAlignment="center" />
-
-                <TextView
                     android:id="@+id/currentInitiativeDisplay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="Initiative"
-                    android:textAlignment="center" />
+                    android:textAlignment="textEnd" />
+
+                <TextView
+                    android:id="@+id/currentInitiative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Initiative"
+                    android:textAlignment="textStart"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/initiativeModDisplay"
@@ -130,7 +120,17 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="InitMod"
-                    android:textAlignment="center" />
+                    android:textAlignment="textEnd" />
+
+                <TextView
+                    android:id="@+id/initiativeMod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="InitMod"
+                    android:textAlignment="textStart"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
