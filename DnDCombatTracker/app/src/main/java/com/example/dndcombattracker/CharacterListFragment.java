@@ -50,14 +50,25 @@ public class CharacterListFragment extends Fragment {
 
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        FloatingActionButton fab = view.findViewById(R.id.add_character_button);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton createFab = view.findViewById(R.id.add_character_button);
+        createFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "onClick: FAB Clicked");
+                Log.d(TAG, "onClick: CreateFAB Clicked");
                 Context context = v.getContext();
                 beginCharacterCreationDialog();
+            }
+        });
+
+        FloatingActionButton deleteFab = view.findViewById(R.id.delete_character_button);
+        deleteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(TAG, "onClick: DeleteFAB Clicked");
+                Context context = v.getContext();
+                beginCharacterDeletionDialog();
             }
         });
 
@@ -74,6 +85,11 @@ public class CharacterListFragment extends Fragment {
     {
         dialogCharacter = null;
         characterTypeDialog();
+    }
+
+    private void beginCharacterDeletionDialog()
+    {
+
     }
 
     private void characterNameDialog()
