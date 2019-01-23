@@ -31,6 +31,9 @@ public class CharacterMasterList {
         characters.add(new PC("Aeon", 15, 125, 5));
         characters.add(new Monster("Medusa", 25, 1025, 9));
         characters.add(new Monster("Dwarfish Cult Leader", 19, 337, 5));
+        characters.add(new PC("Grahnath", 19, 135, 5));
+        characters.add(new PC("Kelly", 12, 100, 6));
+        characters.add(new Monster("Gnome King", 20, 637, 7));
 
         return characters;
     }
