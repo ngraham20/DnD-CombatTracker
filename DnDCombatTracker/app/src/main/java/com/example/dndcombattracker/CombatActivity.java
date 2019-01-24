@@ -98,7 +98,7 @@ public class CombatActivity extends AppCompatActivity {
     {
 
         mDialogNames = new ArrayList<>();
-        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+        for(Character character : mCharacters)
         {
             String name = character.getCharacterName();
             mDialogNames.add(name);
@@ -110,7 +110,7 @@ public class CombatActivity extends AppCompatActivity {
         builder.setItems(input, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+                Character character = mCharacters.get(i);
                 int index = mCharacters.indexOf(character);
                 character.setInCombat(false);
                 mCombat.deleteCharacter(character);
