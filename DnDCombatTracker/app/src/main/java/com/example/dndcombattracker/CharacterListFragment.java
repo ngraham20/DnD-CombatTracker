@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -210,7 +211,7 @@ public class CharacterListFragment extends Fragment {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogCharacter = Character.characterFactory(items[i].toString(), null, -1,-1,-1);
+                dialogCharacter = Character.characterFactory(items[i].toString(), "", 0,1,0);
                 characterNameDialog();
             }
         });
@@ -272,7 +273,15 @@ public class CharacterListFragment extends Fragment {
                 Log.d(TAG, "onClick: Setting Character HP");
 
                 if(dialogCharacter!=null) {
-                    int health = Integer.parseInt(input.getText().toString());
+                    String intString = input.getText().toString();
+                    int health;
+                    if(!intString.equals("")) {
+                        health = Integer.parseInt(intString);
+                    }
+                    else
+                    {
+                        health = 1;
+                    }
                     dialogCharacter.setMaxHealth(health);
                     dialogCharacter.setCurrentHealth(health);
                     characterInitiativeModDialog();
