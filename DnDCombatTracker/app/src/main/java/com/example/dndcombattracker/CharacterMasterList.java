@@ -6,24 +6,43 @@ public class CharacterMasterList {
     private ArrayList<Character> mCharacters;
     private static final CharacterMasterList holder = new CharacterMasterList();
 
+    /**
+     * The only constructor is private to prevent creation of new Master List
+     */
     private CharacterMasterList()
     {
         mCharacters = initDefaultCharacters();
     }
 
+    /**
+     * returns the character list
+     * @return the character list
+     */
     public ArrayList<Character> getmCharacters() {
         return mCharacters;
     }
 
+    /**
+     * sets the character list
+     * @param mCharacters the character list to set to
+     */
     public void setmCharacters(ArrayList<Character> mCharacters) {
         this.mCharacters = mCharacters;
     }
 
+    /**
+     * Returns the static instance of this object
+     * @return this Instance
+     */
     public static CharacterMasterList getInstance()
     {
         return holder;
     }
 
+    /**
+     * Generates a short list of default characters
+     * @return the default list of characters
+     */
     private ArrayList<Character> initDefaultCharacters()
     {
         ArrayList<Character> characters = new ArrayList<>();

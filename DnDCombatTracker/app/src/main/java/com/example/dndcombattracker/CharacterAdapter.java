@@ -24,6 +24,11 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
     private ArrayList<Character> mCharacters;
     private Context mContext;
 
+    /**
+     * Constructor
+     * @param context the context passed in
+     * @param mCharacters the characters to put in the recyclerview
+     */
     public CharacterAdapter(Context context, ArrayList<Character> mCharacters) {
         this.mCharacters = mCharacters;
         this.mContext = context;
@@ -68,6 +73,9 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
         return mCharacters.size();
     }
 
+    /**
+     * Subclass for the ViewHolder
+     */
     public class CharacterViewHolder extends RecyclerView.ViewHolder
     {
 
@@ -76,6 +84,10 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
         TextView character_init;
         ConstraintLayout parentLayout;
 
+        /**
+         * Constructor
+         * @param itemView the view to apply
+         */
         public CharacterViewHolder(@NonNull View itemView) {
             super(itemView);
             character_ac = itemView.findViewById(R.id.character_ac);

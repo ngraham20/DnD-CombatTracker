@@ -82,12 +82,18 @@ public class CombatActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Begin the character deletion dialog chain
+     */
     private void beginCharacterDeletionDialog()
     {
         dialogCharacter = null;
         deleteCharacterDialog();
     }
 
+    /**
+     * Delete character dialog
+     */
     private void deleteCharacterDialog()
     {
 
@@ -105,11 +111,11 @@ public class CombatActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
-
-                mCombat.deleteCharacter(character);
+                int index = mCharacters.indexOf(character);
                 character.setInCombat(false);
-                mAdapter.notifyItemRemoved(i);
-                mAdapter.notifyDataSetChanged();
+                mCombat.deleteCharacter(character);
+                mAdapter.notifyItemRemoved(index);
+                mAdapter.notifyItemRangeChanged(index,mCharacters.size());
             }
         });
         builder.setTitle("Delete Character");
@@ -118,6 +124,9 @@ public class CombatActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Add Character dialog
+     */
     private void addCharacterDialog()
     {
         mDialogNames = new ArrayList<>();
@@ -160,6 +169,10 @@ public class CombatActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Dialog to prevent deletion of invalid character
+     * @param message the reason for invalid deletion
+     */
     private void badCharacterAddDialog(String message)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -174,11 +187,6 @@ public class CombatActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void cancel()
-    {
-        mDialogCharacter = null;
     }
 
     @Override

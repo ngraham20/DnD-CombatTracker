@@ -35,6 +35,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         loadFragment(new CharacterListFragment());
     }
 
+    /**
+     * Loads the fragment to the content view
+     * @param fragment the fragment to load
+     * @return boolean success
+     */
     private boolean loadFragment(Fragment fragment)
     {
         if(fragment != null) {

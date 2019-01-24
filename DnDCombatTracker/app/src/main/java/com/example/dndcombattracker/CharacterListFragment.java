@@ -84,18 +84,27 @@ public class CharacterListFragment extends Fragment {
         mCharacters = CharacterMasterList.getInstance().getmCharacters();
     }
 
+    /**
+     * Initiates the Character creation dialog chain
+     */
     private void beginCharacterCreationDialog()
     {
         dialogCharacter = null;
         characterTypeDialog();
     }
 
+    /**
+     * Begins the character deletion dialog chain
+     */
     private void beginCharacterDeletionDialog()
     {
         dialogCharacter = null;
         deleteCharacterDialog();
     }
 
+    /**
+     * The dialog to delete a character
+     */
     private void deleteCharacterDialog()
     {
 
@@ -135,6 +144,10 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Calls an alert to prevent character deletion
+     * @param message reason the character cannot be deleted
+     */
     private void badCharacterDeleteDialog(String message)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -151,6 +164,9 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Character name link in dialog chain
+     */
     private void characterNameDialog()
     {
         final EditText input = new EditText(getContext());
@@ -182,6 +198,9 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Character type in dialog chain
+     */
     private void characterTypeDialog()
     {
         final CharSequence[] items = {"Monster","NPC","PC"};
@@ -200,6 +219,9 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Character AC in dialog chain
+     */
     private void characterACDialog()
     {
         final NumberPicker input = new NumberPicker(getContext());
@@ -233,6 +255,9 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Character hp in dialog chain
+     */
     private void characterHPDialog()
     {
         final EditText input = new EditText(getContext());
@@ -266,6 +291,9 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Character initiative modifier in dialog chain
+     */
     private void characterInitiativeModDialog()
     {
         final NumberPicker input = new NumberPicker(getContext());
@@ -301,6 +329,10 @@ public class CharacterListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * adds a character to the global character list
+     * @param character
+     */
     public void addCharacter(Character character)
     {
         // copy the character and add it to list
@@ -311,6 +343,9 @@ public class CharacterListFragment extends Fragment {
         mAdapter.notifyItemInserted(mCharacters.indexOf(newGuy));
     }
 
+    /**
+     * cancels character creation
+     */
     private void cancel()
     {
         // set all dialog variables to null
@@ -318,6 +353,9 @@ public class CharacterListFragment extends Fragment {
 
     }
 
+    /**
+     * null the dialog temp character
+     */
     private void clearDialogCharacter()
     {
         dialogCharacter = null;

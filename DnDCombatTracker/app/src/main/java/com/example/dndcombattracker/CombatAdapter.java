@@ -24,6 +24,11 @@ public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatView
     private ArrayList<Combat> mcombats;
     private Context mContext;
 
+    /**
+     * Constructor
+     * @param context the context to use
+     * @param mcombats the combas to add to the recyclerview
+     */
     public CombatAdapter(Context context, ArrayList<Combat> mcombats) {
         this.mcombats = mcombats;
         this.mContext = context;
@@ -67,12 +72,19 @@ public class CombatAdapter extends RecyclerView.Adapter<CombatAdapter.CombatView
         return mcombats.size();
     }
 
+    /**
+     * Subclass to extend ViewHolder
+     */
     public class CombatViewHolder extends RecyclerView.ViewHolder
     {
         TextView combat_name;
         TextView combat_character_count;
         ConstraintLayout parentLayout;
 
+        /**
+         * Constructor
+         * @param itemView the view to apply
+         */
         public CombatViewHolder(@NonNull View itemView) {
             super(itemView);
             combat_name = itemView.findViewById(R.id.combat_name);

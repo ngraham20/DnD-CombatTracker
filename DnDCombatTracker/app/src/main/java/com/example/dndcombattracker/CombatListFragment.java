@@ -73,22 +73,34 @@ public class CombatListFragment extends Fragment {
        mCombats = CombatMasterList.getInstance().getmCombats();
     }
 
+    /**
+     * nulls the temp combat
+     */
     private void clearCombatDialog()
     {
         mDialogCombat = null;
     }
 
+    /**
+     * Cancels the dialog chain
+     */
     private void cancel()
     {
         clearCombatDialog();
     }
 
+    /**
+     * Begins the Combat creation dialog chain
+     */
     private void beginCombatDialog()
     {
         clearCombatDialog();
         combatNameDialog();
     }
 
+    /**
+     * Combat Name link in dialog chain
+     */
     private void combatNameDialog()
     {
         final EditText input = new EditText(getContext());
@@ -118,6 +130,10 @@ public class CombatListFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Adds a combat to the Master List
+     * @param combat the combat to add
+     */
     private void addCombat(Combat combat)
     {
         Combat newboi = new Combat(combat);
@@ -133,6 +149,9 @@ public class CombatListFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Delete combat dialog
+     */
     private void deleteCombatDialog()
     {
         mDialogNames = new ArrayList<>();

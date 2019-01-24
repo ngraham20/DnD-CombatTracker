@@ -62,6 +62,9 @@ public class CharacterActivity extends AppCompatActivity {
     private Button changeNameButton;
     private EditText editName;
 
+    /**
+     * Default Constructor
+     */
     public CharacterActivity()
     {
     }
@@ -93,6 +96,9 @@ public class CharacterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Add click listeners to the buttons
+     */
     public void buttonWatcher()
     {
         healButton.setOnClickListener(new HpOnClickListener(this, true));
@@ -194,10 +200,19 @@ public class CharacterActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Private class for view listeners
+     */
     private class HpOnClickListener implements View.OnClickListener
     {
         private CharacterActivity activity;
         private boolean type;
+
+        /**
+         * Constructor
+         * @param newActivity the activity context
+         * @param newType damage or heal
+         */
         public HpOnClickListener(CharacterActivity newActivity, boolean newType)
         {
             activity = newActivity;
@@ -219,11 +234,17 @@ public class CharacterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets the nameText view
+     */
     public void setNameText()
     {
         nameText.setText(character.getCharacterName());
     }
 
+    /**
+     * Sets the StatsText views
+     */
     public void setStatsText()
     {
         setTypeText();
@@ -235,26 +256,41 @@ public class CharacterActivity extends AppCompatActivity {
         setNameText();
     }
 
+    /**
+     * sets the typeText view
+     */
     public void setTypeText()
     {
         typeText.setText(character.getCharacterType());
     }
 
+    /**
+     * sets the armorText view
+     */
     public void setArmorText()
     {
         armorText.setText(Integer.toString(character.getArmorClass()));
     }
 
+    /**
+     * sets the Initiative view
+     */
     public void setInitiativeText()
     {
         initiativeText.setText(Integer.toString(character.getCurrentInitiative()));
     }
 
+    /**
+     * sets the initiative modifier view
+     */
     public void setInitModText()
     {
         initModText.setText("+" + Integer.toString(character.getInitiativeModifier()));
     }
 
+    /**
+     * sets the current health view
+     */
     public void setCurrentHealthText()
     {
         currentHpText.setText(Integer.toString(character.getCurrentHealth()));
@@ -265,6 +301,11 @@ public class CharacterActivity extends AppCompatActivity {
         tempHpText.setText(Integer.toString(character.getTempHP()));
     }
 
+    /**
+     * updates the current hp with damage or heal
+     * @param healed whether it should heal or not
+     * @param amount the amount to heal/damage
+     */
     //true is healed, false is damage
     public void updateCurrentHp(boolean healed, int amount)
     {
@@ -278,6 +319,9 @@ public class CharacterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * initialize all views
+     */
     private void initializeViews()
     {
         nameText = (TextView) findViewById(R.id.characterName);

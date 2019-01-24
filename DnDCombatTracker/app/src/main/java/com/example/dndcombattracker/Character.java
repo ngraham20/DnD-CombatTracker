@@ -19,6 +19,14 @@ public abstract class Character implements Serializable, Comparable
     private boolean inCombat;
 
 
+    /**
+     * Normal Constructor
+     * @param newName new name
+     * @param newAC new AC
+     * @param newMaxHP new max HP
+     * @param newInitMod new initiative modifier
+     * @param newType new Type
+     */
     public Character(String newName, int newAC, int newMaxHP, int newInitMod, type newType)
     {
         characterName = newName;
@@ -30,6 +38,10 @@ public abstract class Character implements Serializable, Comparable
         inCombat = false;
     }
 
+    /**
+     * Copy constructor
+     * @param other the Character to copy
+     */
     public Character(Character other) {
         this.temporaryHP = other.temporaryHP;
         this.characterName = other.characterName;
@@ -43,6 +55,15 @@ public abstract class Character implements Serializable, Comparable
         this.failSaves = other.failSaves;
     }
 
+    /**
+     * Static factory function to return one of the children objects
+     * @param type type to return
+     * @param name name of new Character
+     * @param ac AC of new Character
+     * @param hp max HP of new Character
+     * @param initMod initiative modifier of new Character
+     * @return the new Character created by the factory
+     */
     static public Character characterFactory(String type, String name, int ac, int hp, int initMod)
     {
         switch (type)
@@ -57,19 +78,23 @@ public abstract class Character implements Serializable, Comparable
         return null;
     }
 
-    public void addedToCombat()
-    {
-        inCombat = true;
-    }
-
+    /**
+     * return whether the character is in combat
+     * @return if the character is in combat
+     */
     public boolean getInCombat()
     {
         return inCombat;
     }
 
+    /**
+     * Sets whether the character is in combat
+     * @param inCombat the value to set
+     */
     public void setInCombat(boolean inCombat) {
         this.inCombat = inCombat;
     }
+
 
     public static Character copy(Character character)
     {
@@ -88,13 +113,19 @@ public abstract class Character implements Serializable, Comparable
         return null;
     }
 
-
+    /**
+     * Resets the values of the saving throws
+     */
     public void resetSavingThrows()
     {
         Arrays.fill(successSaves, Boolean.FALSE);
         Arrays.fill(failSaves, Boolean.FALSE);
     }
 
+    /**
+     * Returns the temporary hp
+     * @return the temp hp
+     */
     public int getTempHP() {
         if (temporaryHP > 0) {
             return temporaryHP;
@@ -104,6 +135,9 @@ public abstract class Character implements Serializable, Comparable
         }
     }
 
+    /**
+     * Adds a failed save to the character
+     */
     public void addFailedSave()
     {
         for(int i = 0; i < failSaves.length; i++)
@@ -116,6 +150,9 @@ public abstract class Character implements Serializable, Comparable
         }
     }
 
+    /**
+     * Adds a successful save to the character
+     */
     public void addSuccessfulSave()
     {
         for(int i = 0; i < successSaves.length; i++)
@@ -128,6 +165,10 @@ public abstract class Character implements Serializable, Comparable
         }
     }
 
+    /**
+     * Damage the character
+     * @param damage the amount to damage by
+     */
     public void takeDamage(int damage)
     {
 
@@ -169,6 +210,10 @@ public abstract class Character implements Serializable, Comparable
 
     }
 
+    /**
+     * Heals the character by an amount
+     * @param healAmount the amount to heal by
+     */
     public void heal(int healAmount)
     {
         int healedHealth = currentHealth + healAmount;
@@ -182,24 +227,44 @@ public abstract class Character implements Serializable, Comparable
         }
     }
 
+    /**
+     * Return temporary hp
+     * @param newTempHP the temporary hp
+     */
     public void setTemporaryHP(int newTempHP)
     {
         temporaryHP = newTempHP;
     }
 
+    /**
+     * Returns the character name
+     * @return the character name
+     */
     public String getCharacterName() {
         return characterName;
     }
 
+    /**
+     * Sets the character name
+     * @param characterName the name to set to
+     */
     public void setCharacterName(String characterName) {
         this.characterName = characterName;
     }
 
+    /**
+     * Returns the current health
+     * @return character current health
+     */
     public int getCurrentHealth()
     {
         return currentHealth;
     }
 
+    /**
+     * Sets the current health
+     * @param newHealth the health to set to
+     */
     public void setCurrentHealth(int newHealth)
     {
         if(newHealth > maxHealth)
@@ -212,22 +277,42 @@ public abstract class Character implements Serializable, Comparable
         }
     }
 
+    /**
+     * Returns the armor class
+     * @return the armor class to return
+     */
     public int getArmorClass() {
         return armorClass;
     }
 
+    /**
+     * Returns the max health
+     * @return max health
+     */
     public int getMaxHealth() {
         return maxHealth;
     }
 
+    /**
+     * Returns the current initiative (base init + mod)
+     * @return the base initiative + initiative modifier
+     */
     public int getCurrentInitiative() {
         return baseInitiative + initiativeModifier;
     }
 
+    /**
+     * Returns the initiative modifier
+     * @return the initiative modifier
+     */
     public int getInitiativeModifier() {
         return initiativeModifier;
     }
 
+    /**
+     * Returns the character type
+     * @return the character type
+     */
     public String getCharacterType() {
 
         switch(characterType) {
@@ -251,26 +336,51 @@ public abstract class Character implements Serializable, Comparable
         }
     }
 
+    /**
+     * Sets the armor class of the character
+     * @param armorClass the armor class of the character
+     */
     public void setArmorClass(int armorClass) {
         this.armorClass = armorClass;
     }
 
+    /**
+     * Sets the character type
+     * @param characterType the character type
+     */
     public void setCharacterType(type characterType) {
         this.characterType = characterType;
     }
 
+    /**
+     * Sets the base initiative
+     * @param baseInitiative the base initiative
+     */
     public void setBaseInitiative(int baseInitiative) {
         this.baseInitiative = baseInitiative;
     }
 
+    /**
+     * Sets the initative modifier
+     * @param initiativeModifier the initiative modifier
+     */
     public void setInitiativeModifier(int initiativeModifier) {
         this.initiativeModifier = initiativeModifier;
     }
 
+    /**
+     * Sets the max health
+     * @param maxHealth the max health
+     */
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
 
+    /**
+     * Compares one Character to another based on Initiative for sorting
+     * @param compareable the Character to compare to
+     * @return the result of the comparison
+     */
     @Override
     public int compareTo(Object compareable) {
         int compareInit = ((Character)compareable).getCurrentInitiative();
