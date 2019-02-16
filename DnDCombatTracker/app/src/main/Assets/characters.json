@@ -1,0 +1,24 @@
+[
+  {
+    "Oberon": [
+    {
+      "type": "Player"
+    },
+    {
+      "ac": 19
+    },
+    {
+      "init_mod": 5
+    },
+    {
+      "init_base": 0
+    },
+    {
+      "current_hp": 125
+    },
+    {
+      "temp_hp": 0
+    }
+      ]
+  }
+]

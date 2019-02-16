@@ -1,8 +1,11 @@
 package com.example.dndcombattracker;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class CharacterMasterList {
+    private Context context;
     private ArrayList<Character> mCharacters;
     private static final CharacterMasterList holder = new CharacterMasterList();
 
@@ -46,13 +49,15 @@ public class CharacterMasterList {
     private ArrayList<Character> initDefaultCharacters()
     {
         ArrayList<Character> characters = new ArrayList<>();
-        characters.add(new PC("Oberon", 19, 125, 5));
-        characters.add(new PC("Aeon", 15, 125, 5));
-        characters.add(new Monster("Medusa", 25, 1025, 9));
-        characters.add(new Monster("Dwarfish Cult Leader", 19, 337, 5));
-        characters.add(new PC("Grahnath", 19, 135, 5));
-        characters.add(new PC("Kelly", 12, 100, 6));
-        characters.add(new Monster("Gnome King", 20, 637, 7));
+//        characters.add(new PC("Oberon", 19, 125, 5));
+//        characters.add(new PC("Aeon", 15, 125, 5));
+//        characters.add(new Monster("Medusa", 25, 1025, 9));
+//        characters.add(new Monster("Dwarfish Cult Leader", 19, 337, 5));
+//        characters.add(new PC("Grahnath", 19, 135, 5));
+//        characters.add(new PC("Kelly", 12, 100, 6));
+//        characters.add(new Monster("Gnome King", 20, 637, 7));
+
+        DnDFileHandler handler = new DnDFileHandler(context);
 
         return characters;
     }
