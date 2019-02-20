@@ -9,70 +9,7 @@
     "temp_hp": 0
   },
   {
-    "name": "Oberon",
-    "type": "PC",
-    "ac": 19,
-    "init_mod": 5,
-    "init_base": 0,
-    "current_hp": 125,
-    "temp_hp": 0
-  },
-  {
-    "name": "Oberon",
-    "type": "PC",
-    "ac": 19,
-    "init_mod": 5,
-    "init_base": 0,
-    "current_hp": 125,
-    "temp_hp": 0
-  },
-  {
-    "name": "Oberon",
-    "type": "PC",
-    "ac": 19,
-    "init_mod": 5,
-    "init_base": 0,
-    "current_hp": 125,
-    "temp_hp": 0
-  },
-  {
-    "name": "Oberon",
-    "type": "PC",
-    "ac": 19,
-    "init_mod": 5,
-    "init_base": 0,
-    "current_hp": 125,
-    "temp_hp": 0
-  },
-  {
-    "name": "Oberon",
-    "type": "PC",
-    "ac": 19,
-    "init_mod": 5,
-    "init_base": 0,
-    "current_hp": 125,
-    "temp_hp": 0
-  },
-  {
-    "name": "Oberon",
-    "type": "PC",
-    "ac": 19,
-    "init_mod": 5,
-    "init_base": 0,
-    "current_hp": 125,
-    "temp_hp": 0
-  },
-  {
-    "name": "Oberon",
-    "type": "PC",
-    "ac": 19,
-    "init_mod": 5,
-    "init_base": 0,
-    "current_hp": 125,
-    "temp_hp": 0
-  },
-  {
-    "name": "Oberon",
+    "name": "Rache",
     "type": "PC",
     "ac": 19,
     "init_mod": 5,

@@ -386,4 +386,12 @@ public abstract class Character implements Serializable, Comparable
         int compareInit = ((Character)compareable).getCurrentInitiative();
         return compareInit-this.getCurrentInitiative();
     }
+
+    public int getBaseInitiative() {
+        return baseInitiative;
+    }
+
+    public int getTemporaryHP() {
+        return temporaryHP;
+    }
 }

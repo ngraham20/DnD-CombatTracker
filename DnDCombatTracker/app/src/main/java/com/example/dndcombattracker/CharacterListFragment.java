@@ -137,6 +137,13 @@ public class CharacterListFragment extends Fragment {
                 if(!character.getInCombat())
                 {
                     mCharacters.remove(character);
+
+                    // TODO this next line should be refactored for async or modified for better code
+                    try {
+                        CharacterMasterList.getInstance().removeCharacter(getContext(), i);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     mAdapter.notifyItemRemoved(i);
                     mAdapter.notifyItemRangeChanged(i,mCharacters.size());
                 }
@@ -356,6 +363,14 @@ public class CharacterListFragment extends Fragment {
         // copy the character and add it to list
         Character newGuy = Character.copy(character);
         mCharacters.add(newGuy);
+
+        try {
+            CharacterMasterList.getInstance().addCharacter(getContext(), character);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // update the ui
         mAdapter.notifyItemInserted(mCharacters.indexOf(newGuy));

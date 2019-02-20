@@ -2,20 +2,27 @@ package com.example.dndcombattracker;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 
 public class CharacterMasterList {
     private ArrayList<Character> mCharacters;
+    private JSONArray jSonArray;
     private static final CharacterMasterList holder = new CharacterMasterList();
     private final String FILE_NAME = "characters.json";
 
@@ -79,12 +86,16 @@ public class CharacterMasterList {
         return true;
     }
 
-    private void parseJsonString(String json) throws JSONException {
-        JSONArray jsonArray = new JSONArray(json);
+    public boolean saveCharactersToFile(Context context) throws IOException {
+        return true;
+    }
 
-        for(int i = 0; i < jsonArray.length(); i++)
+    private void parseJsonString(String json) throws JSONException {
+        jSonArray = new JSONArray(json);
+
+        for(int i = 0; i < jSonArray.length(); i++)
         {
-            JSONObject jObject = (JSONObject) jsonArray.get(i);
+            JSONObject jObject = (JSONObject) jSonArray.get(i);
 
             Character character = Character.characterFactory(
                     jObject.getString("name"),
@@ -96,5 +107,45 @@ public class CharacterMasterList {
 
             mCharacters.add(character);
         }
+    }
+
+    public void addCharacter(Context context, Character character) throws JSONException, IOException {
+        JSONObject jsonObject = new JSONObject()
+                .put("name", character.getCharacterName())
+                .put("type", character.getCharacterType())
+                .put("ac",character.getArmorClass())
+                .put("init_mod",character.getInitiativeModifier())
+                .put("init_base",character.getBaseInitiative())
+                .put("current_hp",character.getCurrentHealth())
+                .put("temp_hp", character.getTempHP());
+
+        jSonArray.put(jsonObject);
+
+        // TODO make this next bit a threaded task to prevent lag
+
+        String jsonString = jSonArray.toString();
+
+        Writer output = null;
+        File file = new File(FILE_NAME);
+        output = new BufferedWriter(new FileWriter(file));
+        output.write(jsonString);
+        output.close();
+        Toast.makeText(context, "Characters saved", Toast.LENGTH_LONG).show();
+
+    }
+
+    public void removeCharacter(Context context, int index) throws IOException {
+        jSonArray.remove(index);
+
+        // TODO make this next bit a threaded task to prevent lag
+
+        String jsonString = jSonArray.toString();
+
+        Writer output = null;
+        File file = new File(FILE_NAME);
+        output = new BufferedWriter(new FileWriter(file));
+        output.write(jsonString);
+        output.close();
+        Toast.makeText(context, "Characters saved", Toast.LENGTH_LONG).show();
     }
 }
