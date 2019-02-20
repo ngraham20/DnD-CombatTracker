@@ -123,6 +123,11 @@ public class CharacterMasterList {
     }
 
     public void removeCharacter(Character character){
+        int index = mCharacters.indexOf(character);
+        jSonArray.remove(index);
+
+        String contents = jSonArray.toString();
+        DnDFileHandler.getInstance().writeToFile(FILE_NAME, contents);
         mCharacters.remove(character);
     }
 }
