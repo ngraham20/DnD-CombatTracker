@@ -61,7 +61,11 @@ public class CharacterMasterList {
 
     public static void CreateMasterFileIfNotExist()
     {
-        DnDFileHandler.getInstance().createFileIfNotExist(FILE_NAME);
+        try {
+            DnDFileHandler.getInstance().createFileIfNotExist(FILE_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -116,7 +120,11 @@ public class CharacterMasterList {
         // TODO make this next bit a threaded task to prevent lag
         String jsonString = jSonArray.toString();
 
-        DnDFileHandler.getInstance().writeToFile(FILE_NAME, jsonString);
+        try {
+            DnDFileHandler.getInstance().writeToFile(FILE_NAME, jsonString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         mCharacters.add(character);
 
@@ -127,7 +135,11 @@ public class CharacterMasterList {
         jSonArray.remove(index);
 
         String contents = jSonArray.toString();
-        DnDFileHandler.getInstance().writeToFile(FILE_NAME, contents);
+        try {
+            DnDFileHandler.getInstance().writeToFile(FILE_NAME, contents);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mCharacters.remove(character);
     }
 }
