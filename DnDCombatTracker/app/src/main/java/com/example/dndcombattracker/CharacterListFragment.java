@@ -85,7 +85,7 @@ public class CharacterListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            CharacterMasterList.getInstance().loadCharactersFromFile(getContext());
+            CharacterMasterList.getInstance().loadCharactersFromFile();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -137,11 +137,7 @@ public class CharacterListFragment extends Fragment {
                 if(!character.getInCombat())
                 {
                     // TODO this next line should be refactored for async or modified for better code
-                    try {
-                        CharacterMasterList.getInstance().removeCharacter(character);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    CharacterMasterList.getInstance().removeCharacter(character);
                     mAdapter.notifyItemRemoved(i);
                     mAdapter.notifyItemRangeChanged(i,mCharacters.size());
                 }
@@ -360,7 +356,11 @@ public class CharacterListFragment extends Fragment {
     {
         // copy the character and add it to list
         Character newGuy = Character.copy(character);
-        CharacterMasterList.getInstance().addCharacter(newGuy);
+        try {
+            CharacterMasterList.getInstance().addCharacter(newGuy);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         // update the ui
         mAdapter.notifyItemInserted(mCharacters.indexOf(newGuy));
     }

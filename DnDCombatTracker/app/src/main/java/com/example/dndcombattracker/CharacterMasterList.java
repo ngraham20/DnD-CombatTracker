@@ -24,7 +24,7 @@ public class CharacterMasterList {
     private ArrayList<Character> mCharacters;
     private JSONArray jSonArray = new JSONArray();
     private static final CharacterMasterList holder = new CharacterMasterList();
-    private final String FILE_NAME = "characters.json";
+    private static final String FILE_NAME = "characters.json";
 
     /**
      * The only constructor is private to prevent creation of new Master List
@@ -59,6 +59,11 @@ public class CharacterMasterList {
         return holder;
     }
 
+    public static void CreateMasterFileIfNotExist()
+    {
+        DnDFileHandler.getInstance().createFileIfNotExist(FILE_NAME);
+    }
+
     /**
      * Generates a short list of default characters
      * @return the default list of characters
@@ -70,19 +75,10 @@ public class CharacterMasterList {
         return characters;
     }
 
-    public boolean loadCharactersFromFile(Context context) throws IOException, JSONException {
-//        InputStream inputStream = context.openFileInput(FILE_NAME);
-//
-//        int size = inputStream.available();
-//
-//        byte[] buffer = new byte[size];
-//
-//        inputStream.read(buffer);
-//
-//        inputStream.close();
-//
-//        parseJsonString(new String(buffer, "UTF-8"));
+    public boolean loadCharactersFromFile() throws IOException, JSONException {
 
+        String jsonString = DnDFileHandler.getInstance().readFile(FILE_NAME);
+        parseJsonString(jsonString);
         return true;
     }
 
@@ -105,34 +101,28 @@ public class CharacterMasterList {
         }
     }
 
-    public void addCharacter(Character character){
-//        JSONObject jsonObject = new JSONObject()
-//                .put("name", character.getCharacterName())
-//                .put("type", character.getCharacterType())
-//                .put("ac",character.getArmorClass())
-//                .put("init_mod",character.getInitiativeModifier())
-//                .put("init_base",character.getBaseInitiative())
-//                .put("current_hp",character.getCurrentHealth())
-//                .put("temp_hp", character.getTempHP());
-//
-//        jSonArray.put(jsonObject);
-//
-//        // TODO make this next bit a threaded task to prevent lag
-//
-//        String jsonString = jSonArray.toString();
-//
-//        Writer output = null;
-//        File file = new File(FILE_NAME);
-//        output = new BufferedWriter(new FileWriter(file));
-//        output.write(jsonString);
-//        output.close();
-//        Toast.makeText(context, "Characters saved", Toast.LENGTH_LONG).show();
+    public void addCharacter(Character character) throws JSONException {
+        JSONObject jsonObject = new JSONObject()
+                .put("name", character.getCharacterName())
+                .put("type", character.getCharacterType())
+                .put("ac",character.getArmorClass())
+                .put("init_mod",character.getInitiativeModifier())
+                .put("init_base",character.getBaseInitiative())
+                .put("current_hp",character.getCurrentHealth())
+                .put("temp_hp", character.getTempHP());
+
+        jSonArray.put(jsonObject);
+
+        // TODO make this next bit a threaded task to prevent lag
+        String jsonString = jSonArray.toString();
+
+        DnDFileHandler.getInstance().writeToFile(FILE_NAME, jsonString);
 
         mCharacters.add(character);
 
     }
 
-    public void removeCharacter(Character character) throws IOException {
+    public void removeCharacter(Character character){
         mCharacters.remove(character);
     }
 }

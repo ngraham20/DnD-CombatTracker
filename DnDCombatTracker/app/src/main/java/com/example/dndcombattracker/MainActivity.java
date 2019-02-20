@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         Log.d(TAG, "onCreate: started.");
 
+        // set file handler context now
+        DnDFileHandler.getInstance().setContext(this);
+        CharacterMasterList.CreateMasterFileIfNotExist();
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
