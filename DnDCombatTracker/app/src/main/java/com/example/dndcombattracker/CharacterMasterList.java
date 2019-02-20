@@ -1,13 +1,23 @@
 package com.example.dndcombattracker;
 
 import android.content.Context;
+import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class CharacterMasterList {
-    private Context context;
     private ArrayList<Character> mCharacters;
     private static final CharacterMasterList holder = new CharacterMasterList();
+    private final String FILE_NAME = "characters.json";
 
     /**
      * The only constructor is private to prevent creation of new Master List
@@ -49,16 +59,42 @@ public class CharacterMasterList {
     private ArrayList<Character> initDefaultCharacters()
     {
         ArrayList<Character> characters = new ArrayList<>();
-//        characters.add(new PC("Oberon", 19, 125, 5));
-//        characters.add(new PC("Aeon", 15, 125, 5));
-//        characters.add(new Monster("Medusa", 25, 1025, 9));
-//        characters.add(new Monster("Dwarfish Cult Leader", 19, 337, 5));
-//        characters.add(new PC("Grahnath", 19, 135, 5));
-//        characters.add(new PC("Kelly", 12, 100, 6));
-//        characters.add(new Monster("Gnome King", 20, 637, 7));
-
-        DnDFileHandler handler = new DnDFileHandler(context);
 
         return characters;
+    }
+
+    public boolean loadCharactersFromFile(Context context) throws IOException, JSONException {
+        InputStream inputStream = context.getAssets().open(FILE_NAME);
+
+        int size = inputStream.available();
+
+        byte[] buffer = new byte[size];
+
+        inputStream.read(buffer);
+
+        inputStream.close();
+
+        parseJsonString(new String(buffer, "UTF-8"));
+
+        return true;
+    }
+
+    private void parseJsonString(String json) throws JSONException {
+        JSONArray jsonArray = new JSONArray(json);
+
+        for(int i = 0; i < jsonArray.length(); i++)
+        {
+            JSONObject jObject = (JSONObject) jsonArray.get(i);
+
+            Character character = Character.characterFactory(
+                    jObject.getString("name"),
+                    jObject.getString("type"),
+                    jObject.getInt("ac"),
+                    jObject.getInt("current_hp"),
+                    jObject.getInt("init_mod")
+            );
+
+            mCharacters.add(character);
+        }
     }
 }

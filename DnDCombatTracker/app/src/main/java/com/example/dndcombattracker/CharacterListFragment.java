@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +20,9 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CharacterListFragment extends Fragment {
@@ -82,6 +84,13 @@ public class CharacterListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            CharacterMasterList.getInstance().loadCharactersFromFile(getContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         mCharacters = CharacterMasterList.getInstance().getmCharacters();
     }
 
@@ -211,7 +220,7 @@ public class CharacterListFragment extends Fragment {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogCharacter = Character.characterFactory(items[i].toString(), "", 0,1,0);
+                dialogCharacter = Character.characterFactory("", items[i].toString(), 0, 1, 0);
                 characterNameDialog();
             }
         });

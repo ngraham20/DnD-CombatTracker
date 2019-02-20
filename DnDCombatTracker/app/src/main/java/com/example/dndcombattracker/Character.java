@@ -57,14 +57,14 @@ public abstract class Character implements Serializable, Comparable
 
     /**
      * Static factory function to return one of the children objects
-     * @param type type to return
      * @param name name of new Character
+     * @param type type to return
      * @param ac AC of new Character
      * @param hp max HP of new Character
      * @param initMod initiative modifier of new Character
      * @return the new Character created by the factory
      */
-    static public Character characterFactory(String type, String name, int ac, int hp, int initMod)
+    static public Character characterFactory(String name, String type, int ac, int hp, int initMod)
     {
         switch (type)
         {
