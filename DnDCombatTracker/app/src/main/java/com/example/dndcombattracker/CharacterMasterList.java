@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class CharacterMasterList {
     private ArrayList<Character> mCharacters;
-    private JSONArray jSonArray;
+    private JSONArray jSonArray = new JSONArray();
     private static final CharacterMasterList holder = new CharacterMasterList();
     private final String FILE_NAME = "characters.json";
 
@@ -71,22 +71,18 @@ public class CharacterMasterList {
     }
 
     public boolean loadCharactersFromFile(Context context) throws IOException, JSONException {
-        InputStream inputStream = context.getAssets().open(FILE_NAME);
+//        InputStream inputStream = context.openFileInput(FILE_NAME);
+//
+//        int size = inputStream.available();
+//
+//        byte[] buffer = new byte[size];
+//
+//        inputStream.read(buffer);
+//
+//        inputStream.close();
+//
+//        parseJsonString(new String(buffer, "UTF-8"));
 
-        int size = inputStream.available();
-
-        byte[] buffer = new byte[size];
-
-        inputStream.read(buffer);
-
-        inputStream.close();
-
-        parseJsonString(new String(buffer, "UTF-8"));
-
-        return true;
-    }
-
-    public boolean saveCharactersToFile(Context context) throws IOException {
         return true;
     }
 
@@ -109,43 +105,34 @@ public class CharacterMasterList {
         }
     }
 
-    public void addCharacter(Context context, Character character) throws JSONException, IOException {
-        JSONObject jsonObject = new JSONObject()
-                .put("name", character.getCharacterName())
-                .put("type", character.getCharacterType())
-                .put("ac",character.getArmorClass())
-                .put("init_mod",character.getInitiativeModifier())
-                .put("init_base",character.getBaseInitiative())
-                .put("current_hp",character.getCurrentHealth())
-                .put("temp_hp", character.getTempHP());
+    public void addCharacter(Character character){
+//        JSONObject jsonObject = new JSONObject()
+//                .put("name", character.getCharacterName())
+//                .put("type", character.getCharacterType())
+//                .put("ac",character.getArmorClass())
+//                .put("init_mod",character.getInitiativeModifier())
+//                .put("init_base",character.getBaseInitiative())
+//                .put("current_hp",character.getCurrentHealth())
+//                .put("temp_hp", character.getTempHP());
+//
+//        jSonArray.put(jsonObject);
+//
+//        // TODO make this next bit a threaded task to prevent lag
+//
+//        String jsonString = jSonArray.toString();
+//
+//        Writer output = null;
+//        File file = new File(FILE_NAME);
+//        output = new BufferedWriter(new FileWriter(file));
+//        output.write(jsonString);
+//        output.close();
+//        Toast.makeText(context, "Characters saved", Toast.LENGTH_LONG).show();
 
-        jSonArray.put(jsonObject);
-
-        // TODO make this next bit a threaded task to prevent lag
-
-        String jsonString = jSonArray.toString();
-
-        Writer output = null;
-        File file = new File(FILE_NAME);
-        output = new BufferedWriter(new FileWriter(file));
-        output.write(jsonString);
-        output.close();
-        Toast.makeText(context, "Characters saved", Toast.LENGTH_LONG).show();
+        mCharacters.add(character);
 
     }
 
-    public void removeCharacter(Context context, int index) throws IOException {
-        jSonArray.remove(index);
-
-        // TODO make this next bit a threaded task to prevent lag
-
-        String jsonString = jSonArray.toString();
-
-        Writer output = null;
-        File file = new File(FILE_NAME);
-        output = new BufferedWriter(new FileWriter(file));
-        output.write(jsonString);
-        output.close();
-        Toast.makeText(context, "Characters saved", Toast.LENGTH_LONG).show();
+    public void removeCharacter(Character character) throws IOException {
+        mCharacters.remove(character);
     }
 }
