@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +35,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // set file handler context now
         DnDFileHandler.getInstance().setContext(this);
         CharacterMasterList.CreateMasterFileIfNotExist();
+
+        try {
+            CharacterMasterList.getInstance().loadCharactersFromFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);

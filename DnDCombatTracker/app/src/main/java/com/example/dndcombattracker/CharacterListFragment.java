@@ -84,13 +84,6 @@ public class CharacterListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            CharacterMasterList.getInstance().loadCharactersFromFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         mCharacters = CharacterMasterList.getInstance().getmCharacters();
     }
 
