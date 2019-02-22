@@ -1,18 +1,35 @@
 package com.example.dndcombattracker;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CombatMasterList {
     private static final CombatMasterList holder = new CombatMasterList();
-    private ArrayList<Combat> mCombats;
+    private ArrayList<Combat> mCombats = new ArrayList<>();
+    private ArrayList<Character> mCharacters = new ArrayList<>();
+    private JSONObject rootObject = new JSONObject();
+    private JSONArray jCombats = new JSONArray();
+    private JSONArray jOutsideCombat = new JSONArray();
+    public static String NULL_COMBAT = "NULL";
+    private static final String FILE_NAME = "combats.json";
 
     /**
      * Private Constructor to prevent creation of new Master Lists
      */
     private CombatMasterList()
     {
-        mCombats = initDefaultCombat();
     }
+
+    private void addCombat(Combat combat)
+    {
+        mCombats.add(combat);
+    }
+
+
 
     /**
      * Returns the only instance
@@ -31,15 +48,75 @@ public class CombatMasterList {
         return this.mCombats;
     }
 
-    /**
-     * Initializes the combats list with a default combat
-     * @return the default combats list
-     */
-    private ArrayList<Combat> initDefaultCombat()
+    public ArrayList<Character> getmCharacters()
     {
-        ArrayList<Combat> combats = new ArrayList<>();
-        Combat combat = new Combat("Mountain Crypt");
-        combats.add(combat);
-        return combats;
+        return mCharacters;
+    }
+
+    public static void CreateFileIfNotExist()
+    {
+        try
+        {
+            DnDFileHandler.getInstance().createFileIfNotExist(FILE_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadCombatsFromFile() throws IOException, JSONException {
+        String jsonString = DnDFileHandler.getInstance().readFile(FILE_NAME);
+        parseJsonString(jsonString);
+    }
+
+    public void parseJsonString(String json) throws JSONException {
+        rootObject = new JSONObject(json);
+
+        jCombats = rootObject.getJSONArray("combats");
+        jOutsideCombat = rootObject.getJSONArray("no_combats");
+
+        // add characters not in combat
+
+        for(int i = 0; i < jOutsideCombat.length(); i++)
+        {
+            JSONObject jCharacter = jOutsideCombat.getJSONObject(i);
+
+            Character character = Character.characterFactory(
+                    jCharacter.getString("name"),
+                    jCharacter.getString("type"),
+                    jCharacter.getInt("ac"),
+                    jCharacter.getInt("current_hp"),
+                    jCharacter.getInt("init_mod")
+            );
+
+            character.setInCombat(false, NULL_COMBAT);
+            mCharacters.add(character);
+        }
+
+        // grab combats and all characters in that combat
+        for(int i = 0; i < jCombats.length(); i++)
+        {
+            JSONObject jCombat = jCombats.getJSONObject(i);
+            JSONArray characters = jCombat.getJSONArray("characters");
+
+            Combat combat = new Combat(jCombat.getString("name"));
+
+            for(int j = 0; j < characters.length(); j++)
+            {
+                JSONObject jCharacter = characters.getJSONObject(j);
+                Character character = Character.characterFactory(
+                        jCharacter.getString("name"),
+                        jCharacter.getString("type"),
+                        jCharacter.getInt("ac"),
+                        jCharacter.getInt("current_hp"),
+                        jCharacter.getInt("init_mod"));
+
+                combat.addCharacter(character);
+                character.setInCombat(true, combat.getName());
+                mCharacters.add(character);
+            }
+
+            addCombat(combat);
+
+        }
     }
 }

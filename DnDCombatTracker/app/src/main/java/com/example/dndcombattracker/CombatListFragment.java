@@ -171,7 +171,7 @@ public class CombatListFragment extends Fragment {
 
                 for(Character character: combat.getCharacters())
                 {
-                    character.setInCombat(false);
+                    character.setInCombat(false, CombatMasterList.NULL_COMBAT);
                 }
 
                 mCombats.remove(combat);

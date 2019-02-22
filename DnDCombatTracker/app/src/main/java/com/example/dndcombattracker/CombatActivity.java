@@ -112,7 +112,7 @@ public class CombatActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Character character = mCharacters.get(i);
                 int index = mCharacters.indexOf(character);
-                character.setInCombat(false);
+                character.setInCombat(false, mCombat.getName());
                 mCombat.deleteCharacter(character);
                 mAdapter.notifyItemRemoved(index);
                 mAdapter.notifyItemRangeChanged(index,mCharacters.size());
@@ -146,7 +146,7 @@ public class CombatActivity extends AppCompatActivity {
 
                 if(!character.getInCombat()) // if this character is not in a combat
                 {
-                    character.setInCombat(true);
+                    character.setInCombat(true, mCombat.getName());
                     mCombat.addCharacter(character);
                     mCharacters = mCombat.getCharacters();
                     mAdapter.notifyItemInserted(mCharacters.indexOf(character));

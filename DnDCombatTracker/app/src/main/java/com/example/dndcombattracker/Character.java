@@ -7,6 +7,7 @@ public abstract class Character implements Serializable, Comparable
 {
     private int temporaryHP;
     private String characterName;
+    private String currentCombat;
     private int armorClass;
     private int maxHealth;
     private int currentHealth;
@@ -15,7 +16,7 @@ public abstract class Character implements Serializable, Comparable
     private type characterType;
     private boolean[] successSaves = new boolean[3];
     private boolean[] failSaves = new boolean[3];
-    public enum type {MONSTER, NONPLAYER, PLAYER}
+    public enum type {MONSTER, NONPLAYER, PLAYER, MOB}
     private boolean inCombat;
 
 
@@ -36,6 +37,7 @@ public abstract class Character implements Serializable, Comparable
         initiativeModifier = newInitMod;
         characterType = newType;
         inCombat = false;
+        currentCombat = CombatMasterList.NULL_COMBAT;
     }
 
     /**
@@ -74,6 +76,8 @@ public abstract class Character implements Serializable, Comparable
                 return new NPC(name, ac, hp, initMod);
             case "PC":
                 return new PC(name, ac, hp, initMod);
+            case "Mob":
+                return new Mob(name, ac, hp, initMod);
         }
         return null;
     }
@@ -91,8 +95,9 @@ public abstract class Character implements Serializable, Comparable
      * Sets whether the character is in combat
      * @param inCombat the value to set
      */
-    public void setInCombat(boolean inCombat) {
+    public void setInCombat(boolean inCombat, String combatName) {
         this.inCombat = inCombat;
+        this.currentCombat = combatName;
     }
 
 

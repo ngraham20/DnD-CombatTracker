@@ -55,6 +55,10 @@ public class Combat implements Serializable
         return characters;
     }
 
+    public void setCharacters(ArrayList<Character> characters) {
+        this.characters = characters;
+    }
+
     /**
      * Returns the name of the combat
      * @return the name of the combat

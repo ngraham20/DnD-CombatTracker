@@ -12,6 +12,8 @@ import java.io.IOException;
 
 public class DnDFileHandler {
     private static DnDFileHandler handle = new DnDFileHandler();
+    //private static String FILE_NAME = "combats.json";
+    public enum type {CHARACTER, COMBAT}
     private Context context;
 
     private DnDFileHandler()
@@ -28,8 +30,8 @@ public class DnDFileHandler {
         return handle;
     }
 
-    public void createFileIfNotExist(String file_name) throws IOException {
-        File file = new File(context.getFilesDir(), file_name);
+    public void createFileIfNotExist(String fileName) throws IOException {
+        File file = new File(context.getFilesDir(), fileName);
 
         if(!file.exists())
         {
@@ -37,8 +39,8 @@ public class DnDFileHandler {
         }
     }
 
-    public String readFile(String file_name) throws IOException {
-        File file = new File(context.getFilesDir(), file_name);
+    public String readFile(String fileName) throws IOException {
+        File file = new File(context.getFilesDir(), fileName);
         StringBuffer output = new StringBuffer();
         FileReader fileReader = new FileReader(file.getAbsolutePath());
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -55,8 +57,8 @@ public class DnDFileHandler {
         return output.toString();
     }
 
-    public void writeToFile(String file_name, String json) throws IOException {
-        File file = new File(context.getFilesDir(), file_name);
+    public void writeToFile(type type, String fileName, String json) throws IOException {
+        File file = new File(context.getFilesDir(), fileName);
         FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         bufferedWriter.write(json);
