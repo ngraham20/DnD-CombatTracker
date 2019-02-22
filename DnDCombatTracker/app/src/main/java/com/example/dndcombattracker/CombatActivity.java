@@ -3,17 +3,14 @@ package com.example.dndcombattracker;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,7 +38,7 @@ public class CombatActivity extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.combat_title);
 
         int index = (int) getIntent().getSerializableExtra(CombatAdapter.COMBAT_EXTRA);
-        mCombat = CombatMasterList.getInstance().getmCombats().get(index);
+        mCombat = MasterList.getInstance().getmCombats().get(index);
         mCharacters = mCombat.getCharacters();
 
         String name = mCombat.getName();
@@ -130,7 +127,13 @@ public class CombatActivity extends AppCompatActivity {
     private void addCharacterDialog()
     {
         mDialogNames = new ArrayList<>();
-        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+//        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+//        {
+//            String name = character.getCharacterName();
+//            mDialogNames.add(name);
+//        }
+
+        for(Character character : MasterList.getInstance().getmCharacters())
         {
             String name = character.getCharacterName();
             mDialogNames.add(name);
@@ -142,14 +145,15 @@ public class CombatActivity extends AppCompatActivity {
         builder.setItems(input, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+                //Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+                Character character = MasterList.getInstance().getmCharacters().get(i);
 
                 if(!character.getInCombat()) // if this character is not in a combat
                 {
-                    character.setInCombat(true, mCombat.getName());
-                    mCombat.addCharacter(character);
-                    mCharacters = mCombat.getCharacters();
+                    MasterList.getInstance().addCharacterToCombat(character, mCombat);
+
                     mAdapter.notifyItemInserted(mCharacters.indexOf(character));
+                    mCharacters = mCombat.getCharacters();
                     Collections.sort(mCharacters);
                     mAdapter.notifyDataSetChanged();
                 }

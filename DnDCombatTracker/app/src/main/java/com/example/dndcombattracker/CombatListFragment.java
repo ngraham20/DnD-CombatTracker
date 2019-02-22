@@ -16,7 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,7 @@ public class CombatListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       mCombats = CombatMasterList.getInstance().getmCombats();
+       mCombats = MasterList.getInstance().getmCombats();
     }
 
     /**
@@ -137,7 +138,12 @@ public class CombatListFragment extends Fragment {
     private void addCombat(Combat combat)
     {
         Combat newboi = new Combat(combat);
-        mCombats.add(newboi);
+
+        try {
+            MasterList.getInstance().addCombat(combat);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         mAdapter.notifyItemInserted(mCombats.indexOf(newboi));
 
@@ -167,14 +173,15 @@ public class CombatListFragment extends Fragment {
         builder.setItems(input, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Combat combat = CombatMasterList.getInstance().getmCombats().get(i);
+                Combat combat = MasterList.getInstance().getmCombats().get(i);
 
                 for(Character character: combat.getCharacters())
                 {
-                    character.setInCombat(false, CombatMasterList.NULL_COMBAT);
+                    character.setInCombat(false, MasterList.NULL_COMBAT);
                 }
 
-                mCombats.remove(combat);
+                MasterList.getInstance().removeCombat(combat);
+
                 mAdapter.notifyItemRemoved(i);
                 mAdapter.notifyItemRangeChanged(i,mCombats.size());
             }

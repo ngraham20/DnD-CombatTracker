@@ -6,14 +6,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class CombatMasterList {
-    private static final CombatMasterList holder = new CombatMasterList();
+public class MasterList {
+    private static final MasterList holder = new MasterList();
     public static String NULL_COMBAT = "NULL";
     private static final String FILE_NAME = "combats.json";
 
     private ArrayList<Combat> mCombats = new ArrayList<>();
     private ArrayList<Character> mCharacters = new ArrayList<>();
+    private ArrayList<Character> mOutsideCombat = new ArrayList<>();
     private JSONObject rootObject = new JSONObject();
     private JSONArray jCombats = new JSONArray();
     private JSONArray jOutsideCombat = new JSONArray();
@@ -21,21 +23,52 @@ public class CombatMasterList {
     /**
      * Private Constructor to prevent creation of new Master Lists
      */
-    private CombatMasterList()
+    private MasterList()
     {
     }
 
-    private void addCombat(Combat combat) throws JSONException {
+    public void addCombat(Combat combat) throws JSONException {
         mCombats.add(combat);
         jCombats.put(new JSONObject()
                 .put("name",combat.getName())
                 .put("characters", new JSONArray(combat.getCharacters())));
 
-        try {
-            DnDFileHandler.getInstance().writeToFile(FILE_NAME, rootObject.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // TODO move this to async at some point
+        save();
+    }
+
+    public void addCharacter(Character character) throws JSONException
+    {
+        mCharacters.add(character);
+        mOutsideCombat.add(character);
+        jOutsideCombat.put(new JSONObject()
+                .put("name", character.getCharacterName())
+                .put("type", character.getCharacterType())
+                .put("ac",character.getArmorClass())
+                .put("init_mod",character.getInitiativeModifier())
+                .put("init_base",character.getBaseInitiative())
+                .put("current_hp",character.getCurrentHealth())
+                .put("temp_hp", character.getTempHP()));
+
+        // TODO move this to async at some point
+        save();
+    }
+
+    public void removeCharacter(Character character)
+    {
+        int index = mOutsideCombat.indexOf(character);
+        jOutsideCombat.remove(index);
+        mOutsideCombat.remove(index);
+        mCharacters.remove(character);
+        save();
+    }
+
+    public void removeCombat(Combat combat)
+    {
+        int index = mCombats.indexOf(combat);
+        jCombats.remove(index);
+        mCombats.remove(index);
+        save();
     }
 
 
@@ -44,7 +77,7 @@ public class CombatMasterList {
      * Returns the only instance
      * @return this instance
      */
-    public static CombatMasterList getInstance()
+    public static MasterList getInstance()
     {
         return holder;
     }
@@ -66,23 +99,37 @@ public class CombatMasterList {
     {
         try
         {
-            DnDFileHandler.getInstance().createFileIfNotExist(FILE_NAME);
+            if(DnDFileHandler.getInstance().createFileIfNotExist(FILE_NAME))
+            {
+                JSONObject root = new JSONObject()
+                        .put("combats", new JSONArray())
+                        .put("no_combats", new JSONArray());
+
+                DnDFileHandler.getInstance().writeToFile(FILE_NAME, root.toString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void load() throws IOException, JSONException {
+        String jsonString = DnDFileHandler.getInstance().readFile(FILE_NAME);
+        parseJsonString(jsonString);
+    }
+
+    public void save()
+    {
+        try {
+            DnDFileHandler.getInstance().writeToFile(FILE_NAME, rootObject.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadFromFile() throws IOException, JSONException {
-        String jsonString = DnDFileHandler.getInstance().readFile(FILE_NAME);
-        parseJsonString(jsonString);
-    }
-
-    public void saveToFile()
-    {
-        String jsonString = rootObject.toString();
-    }
-
-    public void parseJsonString(String json) throws JSONException {
+    private void parseJsonString(String json) throws JSONException {
         rootObject = new JSONObject(json);
 
         jCombats = rootObject.getJSONArray("combats");
@@ -103,6 +150,7 @@ public class CombatMasterList {
             );
 
             character.setInCombat(false, NULL_COMBAT);
+            mOutsideCombat.add(character);
             mCharacters.add(character);
         }
 
@@ -132,5 +180,32 @@ public class CombatMasterList {
             mCombats.add(combat);
 
         }
+    }
+
+    public void addCharacterToCombat(Character character, Combat combat)
+    {
+        character.setInCombat(true, combat.getName());
+        combat.addCharacter(character);
+        JSONObject jCombat = null;
+        try {
+            jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
+            jCombat.getJSONArray("characters")
+                    .put(new JSONObject()
+                    .put("name", character.getCharacterName())
+                    .put("type", character.getCharacterType())
+                    .put("ac",character.getArmorClass())
+                    .put("init_mod",character.getInitiativeModifier())
+                    .put("init_base",character.getBaseInitiative())
+                    .put("current_hp",character.getCurrentHealth())
+                    .put("temp_hp", character.getTempHP()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        int index = mOutsideCombat.indexOf(character);
+        jOutsideCombat.remove(index);
+
+        // TODO async
+        save();
     }
 }

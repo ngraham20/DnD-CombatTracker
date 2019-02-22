@@ -84,7 +84,8 @@ public class CharacterListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCharacters = CharacterMasterList.getInstance().getmCharacters();
+        //mCharacters = CharacterMasterList.getInstance().getmCharacters();
+        mCharacters = MasterList.getInstance().getmCharacters();
     }
 
     /**
@@ -112,7 +113,13 @@ public class CharacterListFragment extends Fragment {
     {
 
         mDialogNames = new ArrayList<>();
-        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+//        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+//        {
+//            String name = character.getCharacterName();
+//            mDialogNames.add(name);
+//        }
+
+        for(Character character : MasterList.getInstance().getmCharacters())
         {
             String name = character.getCharacterName();
             mDialogNames.add(name);
@@ -125,12 +132,14 @@ public class CharacterListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+                //Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
+                Character character = MasterList.getInstance().getmCharacters().get(i);
 
                 if(!character.getInCombat())
                 {
                     // TODO this next line should be refactored for async or modified for better code
-                    CharacterMasterList.getInstance().removeCharacter(character);
+                    //CharacterMasterList.getInstance().removeCharacter(character);
+                    MasterList.getInstance().removeCharacter(character);
                     mAdapter.notifyItemRemoved(i);
                     mAdapter.notifyItemRangeChanged(i,mCharacters.size());
                 }
@@ -350,7 +359,8 @@ public class CharacterListFragment extends Fragment {
         // copy the character and add it to list
         Character newGuy = Character.copy(character);
         try {
-            CharacterMasterList.getInstance().addCharacter(newGuy);
+            //CharacterMasterList.getInstance().addCharacter(newGuy);
+            MasterList.getInstance().addCharacter(newGuy);
         } catch (JSONException e) {
             e.printStackTrace();
         }

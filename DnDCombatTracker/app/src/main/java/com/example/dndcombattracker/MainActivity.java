@@ -1,18 +1,12 @@
 package com.example.dndcombattracker;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -35,9 +29,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // set file handler context now
         DnDFileHandler.getInstance().setContext(this);
         CharacterMasterList.CreateMasterFileIfNotExist();
+        MasterList.CreateFileIfNotExist();
 
         try {
-            CharacterMasterList.getInstance().loadCharactersFromFile();
+            MasterList.getInstance().load();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

@@ -12,8 +12,6 @@ import java.io.IOException;
 
 public class DnDFileHandler {
     private static DnDFileHandler handle = new DnDFileHandler();
-    //private static String FILE_NAME = "combats.json";
-    public enum type {CHARACTER, COMBAT}
     private Context context;
 
     private DnDFileHandler()
@@ -30,13 +28,16 @@ public class DnDFileHandler {
         return handle;
     }
 
-    public void createFileIfNotExist(String fileName) throws IOException {
+    public boolean createFileIfNotExist(String fileName) throws IOException {
         File file = new File(context.getFilesDir(), fileName);
 
         if(!file.exists())
         {
             file.createNewFile();
+            return true;
         }
+
+        return false;
     }
 
     public String readFile(String fileName) throws IOException {
@@ -57,7 +58,7 @@ public class DnDFileHandler {
         return output.toString();
     }
 
-    public void writeToFile(type type, String fileName, String json) throws IOException {
+    public void writeToFile(String fileName, String json) throws IOException {
         File file = new File(context.getFilesDir(), fileName);
         FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

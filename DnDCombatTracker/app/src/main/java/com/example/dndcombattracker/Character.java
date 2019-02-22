@@ -37,7 +37,7 @@ public abstract class Character implements Serializable, Comparable
         initiativeModifier = newInitMod;
         characterType = newType;
         inCombat = false;
-        currentCombat = CombatMasterList.NULL_COMBAT;
+        currentCombat = MasterList.NULL_COMBAT;
     }
 
     /**
@@ -327,7 +327,7 @@ public abstract class Character implements Serializable, Comparable
             }
             case PLAYER:
             {
-                return "Player";
+                return "PC";
             }
             case NONPLAYER:
             {
