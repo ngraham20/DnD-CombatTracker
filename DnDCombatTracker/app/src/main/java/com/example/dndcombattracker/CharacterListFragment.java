@@ -216,7 +216,7 @@ public class CharacterListFragment extends Fragment {
      */
     private void characterTypeDialog()
     {
-        final CharSequence[] items = {"Monster","NPC","PC"};
+    final CharSequence[] items = {Character.MONSTER,Character.NPC,Character.PC,Character.MOB};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Character Type");

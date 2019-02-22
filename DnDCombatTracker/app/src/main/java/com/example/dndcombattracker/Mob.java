@@ -5,7 +5,7 @@ public class Mob extends Character {
         super(newName, newAC, newMaxHP, newInitMod, type.MOB);
     }
 
-    public Mob(Character other) {
+    public Mob(Mob other) {
         super(other);
     }
 }

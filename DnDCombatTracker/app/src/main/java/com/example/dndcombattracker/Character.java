@@ -19,6 +19,11 @@ public abstract class Character implements Serializable, Comparable
     public enum type {MONSTER, NONPLAYER, PLAYER, MOB}
     private boolean inCombat;
 
+    public static final String MONSTER = "Monster";
+    public static final String NPC = "NPC";
+    public static final String PC = "PC";
+    public static final String MOB = "Mob";
+
 
     /**
      * Normal Constructor
@@ -70,13 +75,13 @@ public abstract class Character implements Serializable, Comparable
     {
         switch (type)
         {
-            case "Monster":
+            case MONSTER:
                 return new Monster(name, ac, hp, initMod);
-            case "NPC":
+            case NPC:
                 return new NPC(name, ac, hp, initMod);
-            case "PC":
+            case PC:
                 return new PC(name, ac, hp, initMod);
-            case "Mob":
+            case MOB:
                 return new Mob(name, ac, hp, initMod);
         }
         return null;
@@ -114,6 +119,10 @@ public abstract class Character implements Serializable, Comparable
         if(character instanceof PC)
         {
             return new PC((PC)character);
+        }
+        if(character instanceof Mob)
+        {
+            return new Mob((Mob)character);
         }
         return null;
     }
@@ -323,15 +332,19 @@ public abstract class Character implements Serializable, Comparable
         switch(characterType) {
             case MONSTER:
             {
-                return "Monster";
+                return Character.MONSTER;
             }
             case PLAYER:
             {
-                return "PC";
+                return Character.PC;
             }
             case NONPLAYER:
             {
-                return "NPC";
+                return Character.NPC;
+            }
+            case MOB:
+            {
+                return Character.MOB;
             }
             default:
             {

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -107,10 +108,8 @@ public class CombatActivity extends AppCompatActivity {
         builder.setItems(input, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Character character = mCharacters.get(i);
-                MasterList.getInstance().removeCharacterFromCombat(character, mCombat);
-                mAdapter.notifyItemRemoved(i);
-                mAdapter.notifyItemRangeChanged(i,mCharacters.size());
+
+                removeCharacter(i);
             }
         });
         builder.setTitle("Delete Character");
@@ -125,11 +124,6 @@ public class CombatActivity extends AppCompatActivity {
     private void addCharacterDialog()
     {
         mDialogNames = new ArrayList<>();
-//        for(Character character : CharacterMasterList.getInstance().getmCharacters())
-//        {
-//            String name = character.getCharacterName();
-//            mDialogNames.add(name);
-//        }
 
         for(Character character : MasterList.getInstance().getmCharacters())
         {
@@ -144,18 +138,57 @@ public class CombatActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
-                Character character = MasterList.getInstance().getmCharacters().get(i);
+                mDialogCharacter = MasterList.getInstance().getmCharacters().get(i);
 
-                if(!character.getInCombat()) // if this character is not in a combat
+                if(mDialogCharacter.getCharacterType().equals(Character.MOB))
                 {
-                    MasterList.getInstance().addCharacterToCombat(character, mCombat);
-
-                    mAdapter.notifyItemInserted(mCharacters.indexOf(character));
-                    mCharacters = mCombat.getCharacters();
-                    Collections.sort(mCharacters);
-                    mAdapter.notifyDataSetChanged();
+                    // TODO get mobs to work
+                    selectMobCountDialog();
                 }
-                else if(mCharacters.contains(character))
+                else
+                {
+                    if(!mDialogCharacter.getInCombat()) // if this character is not in a combat
+                    {
+                        addCharacter(mDialogCharacter);
+                    }
+                    else if(mCharacters.contains(mDialogCharacter))
+                    {
+                        badCharacterAddDialog("Characters cannot be added to the same combat more than once.");
+                    }
+                    else
+                    {
+                        badCharacterAddDialog("Characters cannot be added to more than one combat.");
+                    }
+                }
+            }
+        });
+        builder.setTitle("Add Character");
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void selectMobCountDialog()
+    {
+        final NumberPicker input = new NumberPicker(this);
+        input.setMaxValue(60);
+        input.setMinValue(1);
+        input.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(input);
+        builder.setTitle("Number of Mobs to Add");
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Setting number of Mobs");
+
+                // finish and create mobs
+                if(!mDialogCharacter.getInCombat()) // if this character is not in a combat
+                {
+                    addCharacter(mDialogCharacter);
+                }
+                else if(mCharacters.contains(mDialogCharacter))
                 {
                     badCharacterAddDialog("Characters cannot be added to the same combat more than once.");
                 }
@@ -165,7 +198,6 @@ public class CombatActivity extends AppCompatActivity {
                 }
             }
         });
-        builder.setTitle("Add Character");
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -189,6 +221,24 @@ public class CombatActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void addCharacter(Character character)
+    {
+        MasterList.getInstance().addCharacterToCombat(character, mCombat);
+
+        mAdapter.notifyItemInserted(mCharacters.indexOf(character));
+        mCharacters = mCombat.getCharacters();
+        Collections.sort(mCharacters);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void removeCharacter(int index)
+    {
+        Character character = mCharacters.get(index);
+        MasterList.getInstance().removeCharacterFromCombat(character, mCombat);
+        mAdapter.notifyItemRemoved(index);
+        mAdapter.notifyItemRangeChanged(index,mCharacters.size());
     }
 
     @Override
