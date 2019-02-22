@@ -140,7 +140,7 @@ public class CombatListFragment extends Fragment {
         Combat newboi = new Combat(combat);
 
         try {
-            MasterList.getInstance().addCombat(combat);
+            MasterList.getInstance().addCombat(newboi);
         } catch (JSONException e) {
             e.printStackTrace();
         }
