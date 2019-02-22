@@ -108,11 +108,9 @@ public class CombatActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Character character = mCharacters.get(i);
-                int index = mCharacters.indexOf(character);
-                character.setInCombat(false, mCombat.getName());
-                mCombat.deleteCharacter(character);
-                mAdapter.notifyItemRemoved(index);
-                mAdapter.notifyItemRangeChanged(index,mCharacters.size());
+                MasterList.getInstance().removeCharacterFromCombat(character, mCombat);
+                mAdapter.notifyItemRemoved(i);
+                mAdapter.notifyItemRangeChanged(i,mCharacters.size());
             }
         });
         builder.setTitle("Delete Character");

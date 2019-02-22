@@ -203,9 +203,40 @@ public class MasterList {
         }
 
         int index = mOutsideCombat.indexOf(character);
+        mOutsideCombat.remove(index);
         jOutsideCombat.remove(index);
 
         // TODO async
+        save();
+    }
+
+    public void removeCharacterFromCombat(Character character, Combat combat)
+    {
+        int index = combat.getCharacters().indexOf(character);
+        character.setInCombat(false, NULL_COMBAT);
+        combat.deleteCharacter(character);
+        JSONObject jCombat = null;
+
+        try {
+            jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
+            jCombat.getJSONArray("characters").remove(index);
+
+            jOutsideCombat
+                    .put(new JSONObject()
+                            .put("name", character.getCharacterName())
+                            .put("type", character.getCharacterType())
+                            .put("ac",character.getArmorClass())
+                            .put("init_mod",character.getInitiativeModifier())
+                            .put("init_base",character.getBaseInitiative())
+                            .put("current_hp",character.getCurrentHealth())
+                            .put("temp_hp", character.getTempHP()));
+
+            mOutsideCombat.add(character);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // TODO make async
         save();
     }
 }
