@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,8 @@ public class CharacterListFragment extends Fragment {
     private static final String TAG = "CharacterListFragment";
 
     ArrayList<String> mDialogNames;
+    private Character mRecentlyDeletedCharacter;
+    private int mRecentlyDeletedCharacterPosition;
 
 
     @Nullable
@@ -49,6 +52,8 @@ public class CharacterListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new CharacterListSwipeToDeleteCallback(mAdapter));
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 layoutManager.getOrientation());
@@ -388,5 +393,17 @@ public class CharacterListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void deleteCharacter(int position)
+    {
+        mRecentlyDeletedCharacter = mCharacters.get(position);
+        mRecentlyDeletedCharacterPosition = position;
+        Character character = MasterList.getInstance().getmCharacterTemplates().get(position);
+
+        // TODO this next line should be refactored for async or modified for better code
+        MasterList.getInstance().removeCharacter(character);
+        mAdapter.notifyItemRemoved(position);
+        mAdapter.notifyItemRangeChanged(position,mCharacters.size());
     }
 }

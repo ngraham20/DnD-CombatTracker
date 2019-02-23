@@ -1,9 +1,13 @@
 package com.example.dndcombattracker;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -23,6 +29,9 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
     private ArrayList<Character> mCharacters;
     private Context mContext;
+
+    private Character mRecentlyDeletedCharacter;
+    private int mRecentlyDeletedCharacterPosition;
 
     /**
      * Constructor
@@ -96,5 +105,67 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
             character_init = itemView.findViewById(R.id.character_init);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
+    }
+
+    public Context getmContext() {
+        return mContext;
+    }
+
+    public void deleteItem(int position)
+    {
+        Character character = MasterList.getInstance().getmCharacterTemplates().get(position);
+
+        if(!character.getInCombat())
+        {
+            mRecentlyDeletedCharacter = character;
+            mRecentlyDeletedCharacterPosition = position;
+            // TODO this next line should be refactored for async or modified for better code
+            //CharacterMasterList.getInstance().removeCharacter(character);
+            MasterList.getInstance().removeCharacter(character);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position,mCharacters.size());
+
+            showUndoSnakbar();
+        }
+        else
+        {
+            badCharacterDeleteDialog("Cannot delete characters currently in combat. Remove them and try again.");
+            notifyDataSetChanged();
+        }
+    }
+
+    private void showUndoSnakbar()
+    {
+        Activity activity = (Activity) getmContext();
+        View view = activity.findViewById(R.id.parent_layout);
+        Snackbar snackbar = Snackbar.make(view, "Character deleted.", Snackbar.LENGTH_LONG);
+        snackbar.setAction("Undo", v -> undoDelete());
+        snackbar.show();
+    }
+
+    private void undoDelete()
+    {
+        try {
+            MasterList.getInstance().addCharacter(mRecentlyDeletedCharacter);
+            notifyItemInserted(mCharacters.indexOf(mRecentlyDeletedCharacter));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void badCharacterDeleteDialog(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Warning");
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(TAG, "onClick: Bad Character Dialog");
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
