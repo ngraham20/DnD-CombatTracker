@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Combat implements Serializable
 {
     private ArrayList<Character> characters;
+    private ArrayList<Character> mobs;
     private String name;
 
     /**
@@ -17,6 +18,7 @@ public class Combat implements Serializable
     {
         this.name = name;
         characters = new ArrayList<Character>();
+        mobs = new ArrayList<Character>();
     }
 
     /**
@@ -25,6 +27,7 @@ public class Combat implements Serializable
      */
     public Combat(Combat other) {
         this.characters = other.characters;
+        this.mobs = other.mobs;
         this.name = other.name;
     }
 
@@ -35,6 +38,11 @@ public class Combat implements Serializable
     public void addCharacter(Character character)
     {
         characters.add(character);
+
+        if(character instanceof Mob)
+        {
+            mobs.add(character);
+        }
     }
 
     /**
@@ -44,7 +52,12 @@ public class Combat implements Serializable
      */
     public boolean deleteCharacter(Character doomedCharacter)
     {
-        return characters.remove(doomedCharacter);
+        characters.remove(doomedCharacter);
+
+        if(doomedCharacter instanceof Mob) {
+            mobs.remove(doomedCharacter);
+        }
+        return true;
     }
 
     /**
@@ -53,6 +66,10 @@ public class Combat implements Serializable
      */
     public ArrayList<Character> getCharacters() {
         return characters;
+    }
+
+    public ArrayList<Character> getMobs() {
+        return mobs;
     }
 
     public void setCharacters(ArrayList<Character> characters) {

@@ -6,16 +6,19 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MasterList {
     private static final MasterList holder = new MasterList();
     public static String NULL_COMBAT = "NULL";
     private static final String FILE_NAME = "combats.json";
 
+    // temporary variables
     private ArrayList<Combat> mCombats = new ArrayList<>();
-    private ArrayList<Character> mCharacters = new ArrayList<>();
+    private ArrayList<Character> mCharacterTemplates = new ArrayList<>();
+    private ArrayList<Character> mAllCharacters = new ArrayList<>();
     private ArrayList<Character> mOutsideCombat = new ArrayList<>();
+
+    // variables for loading and saving
     private JSONObject rootObject = new JSONObject();
     private JSONArray jCombats = new JSONArray();
     private JSONArray jOutsideCombat = new JSONArray();
@@ -31,7 +34,8 @@ public class MasterList {
         mCombats.add(combat);
         jCombats.put(new JSONObject()
                 .put("name",combat.getName())
-                .put("characters", new JSONArray(combat.getCharacters())));
+                .put("characters", new JSONArray(combat.getCharacters()))
+                .put("mobs", new JSONArray(combat.getMobs())));
 
         // TODO move this to async at some point
         save();
@@ -39,7 +43,8 @@ public class MasterList {
 
     public void addCharacter(Character character) throws JSONException
     {
-        mCharacters.add(character);
+        mCharacterTemplates.add(character);
+        mAllCharacters.add(character);
         mOutsideCombat.add(character);
         jOutsideCombat.put(new JSONObject()
                 .put("name", character.getCharacterName())
@@ -59,7 +64,8 @@ public class MasterList {
         int index = mOutsideCombat.indexOf(character);
         jOutsideCombat.remove(index);
         mOutsideCombat.remove(index);
-        mCharacters.remove(character);
+        mCharacterTemplates.remove(character);
+        mAllCharacters.remove(character);
         save();
     }
 
@@ -90,9 +96,13 @@ public class MasterList {
         return this.mCombats;
     }
 
-    public ArrayList<Character> getmCharacters()
+    public ArrayList<Character> getmCharacterTemplates()
     {
-        return mCharacters;
+        return mCharacterTemplates;
+    }
+
+    public ArrayList<Character> getmAllCharacters() {
+        return mAllCharacters;
     }
 
     public static void CreateFileIfNotExist()
@@ -122,6 +132,68 @@ public class MasterList {
 
     public void save()
     {
+        rootObject = new JSONObject();
+        jOutsideCombat = new JSONArray();
+        jCombats = new JSONArray();
+
+        try {
+            // setup root node
+            rootObject.put("combats", jCombats);
+            rootObject.put("no_combats", jOutsideCombat);
+
+            // setup combats
+            for(Combat combat : mCombats)
+            {
+                JSONArray jCombatCharacters = new JSONArray();
+                JSONArray jCombatMobs = new JSONArray();
+                for(Character character : combat.getCharacters())
+                {
+                    if(character.getCharacterType().equals(Character.MOB))
+                    {
+                        jCombatMobs.put(new JSONObject()
+                                .put("name", character.getCharacterName())
+                                .put("type", character.getCharacterType())
+                                .put("ac", character.getArmorClass())
+                                .put("init_mod", character.getInitiativeModifier())
+                                .put("init_base", character.getBaseInitiative())
+                                .put("current_hp", character.getCurrentHealth())
+                                .put("temp_hp", character.getTempHP()));
+                    }
+                    else {
+                        jCombatCharacters.put(new JSONObject()
+                                .put("name", character.getCharacterName())
+                                .put("type", character.getCharacterType())
+                                .put("ac", character.getArmorClass())
+                                .put("init_mod", character.getInitiativeModifier())
+                                .put("init_base", character.getBaseInitiative())
+                                .put("current_hp", character.getCurrentHealth())
+                                .put("temp_hp", character.getTempHP()));
+                    }
+                }
+                jCombats.put(new JSONObject()
+                        .put("name",combat.getName())
+                        .put("characters", jCombatCharacters)
+                        .put("mobs", jCombatMobs));
+            }
+
+            //setup outside combat
+            for(Character character : mOutsideCombat)
+            {
+                jOutsideCombat.put(new JSONObject()
+                        .put("name", character.getCharacterName())
+                        .put("type", character.getCharacterType())
+                        .put("ac",character.getArmorClass())
+                        .put("init_mod",character.getInitiativeModifier())
+                        .put("init_base",character.getBaseInitiative())
+                        .put("current_hp",character.getCurrentHealth())
+                        .put("temp_hp", character.getTempHP()));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             DnDFileHandler.getInstance().writeToFile(FILE_NAME, rootObject.toString());
         } catch (IOException e) {
@@ -151,20 +223,22 @@ public class MasterList {
 
             character.setInCombat(false, NULL_COMBAT);
             mOutsideCombat.add(character);
-            mCharacters.add(character);
+            mCharacterTemplates.add(character);
+            mAllCharacters.add(character);
         }
 
         // grab combats and all characters in that combat
         for(int i = 0; i < jCombats.length(); i++)
         {
             JSONObject jCombat = jCombats.getJSONObject(i);
-            JSONArray characters = jCombat.getJSONArray("characters");
+            JSONArray jCharacters = jCombat.getJSONArray("characters");
+            JSONArray jMobs = jCombat.getJSONArray("mobs");
 
             Combat combat = new Combat(jCombat.getString("name"));
 
-            for(int j = 0; j < characters.length(); j++)
+            for(int j = 0; j < jCharacters.length(); j++)
             {
-                JSONObject jCharacter = characters.getJSONObject(j);
+                JSONObject jCharacter = jCharacters.getJSONObject(j);
                 Character character = Character.characterFactory(
                         jCharacter.getString("name"),
                         jCharacter.getString("type"),
@@ -174,7 +248,24 @@ public class MasterList {
 
                 combat.addCharacter(character);
                 character.setInCombat(true, combat.getName());
-                mCharacters.add(character);
+                mCharacterTemplates.add(character);
+                mAllCharacters.add(character);
+            }
+
+            // grab all mobs and allow them into the combat
+            for(int j = 0; j < jMobs.length(); j++)
+            {
+                JSONObject jMob = jMobs.getJSONObject(j);
+                Character mob = Character.characterFactory(
+                        jMob.getString("name"),
+                        jMob.getString("type"),
+                        jMob.getInt("ac"),
+                        jMob.getInt("current_hp"),
+                        jMob.getInt("init_mod"));
+
+                combat.addCharacter(mob);
+                // the mob isn't added to the template list here, but only to the main list
+                mAllCharacters.add(mob);
             }
 
             mCombats.add(combat);
@@ -184,27 +275,56 @@ public class MasterList {
 
     public void addCharacterToCombat(Character character, Combat combat)
     {
-        character.setInCombat(true, combat.getName());
-        combat.addCharacter(character);
-        JSONObject jCombat = null;
-        try {
-            jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
-            jCombat.getJSONArray("characters")
-                    .put(new JSONObject()
-                    .put("name", character.getCharacterName())
-                    .put("type", character.getCharacterType())
-                    .put("ac",character.getArmorClass())
-                    .put("init_mod",character.getInitiativeModifier())
-                    .put("init_base",character.getBaseInitiative())
-                    .put("current_hp",character.getCurrentHealth())
-                    .put("temp_hp", character.getTempHP()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        if(character instanceof Mob)
+        {
 
-        int index = mOutsideCombat.indexOf(character);
-        mOutsideCombat.remove(index);
-        jOutsideCombat.remove(index);
+            Mob newMob = new Mob((Mob)character);
+            // add copies of character
+            combat.addCharacter(newMob);
+            mAllCharacters.add(newMob);
+            JSONObject jCombat = null;
+
+            try {
+                jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
+                jCombat.getJSONArray("mobs")
+                        .put(new JSONObject()
+                                .put("name", character.getCharacterName())
+                                .put("type", character.getCharacterType())
+                                .put("ac", character.getArmorClass())
+                                .put("init_mod", character.getInitiativeModifier())
+                                .put("init_base", character.getBaseInitiative())
+                                .put("current_hp", character.getCurrentHealth())
+                                .put("temp_hp", character.getTempHP()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // notice, that the mob isn't removed from outside combat here. This is intentional
+
+        }
+        else {
+            character.setInCombat(true, combat.getName());
+            combat.addCharacter(character);
+            JSONObject jCombat = null;
+            try {
+                jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
+                jCombat.getJSONArray("characters")
+                        .put(new JSONObject()
+                                .put("name", character.getCharacterName())
+                                .put("type", character.getCharacterType())
+                                .put("ac", character.getArmorClass())
+                                .put("init_mod", character.getInitiativeModifier())
+                                .put("init_base", character.getBaseInitiative())
+                                .put("current_hp", character.getCurrentHealth())
+                                .put("temp_hp", character.getTempHP()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            int index = mOutsideCombat.indexOf(character);
+            mOutsideCombat.remove(index);
+            jOutsideCombat.remove(index);
+        }
 
         // TODO async
         save();
@@ -212,28 +332,43 @@ public class MasterList {
 
     public void removeCharacterFromCombat(Character character, Combat combat)
     {
-        int index = combat.getCharacters().indexOf(character);
-        character.setInCombat(false, NULL_COMBAT);
-        combat.deleteCharacter(character);
-        JSONObject jCombat = null;
+        if(character instanceof Mob)
+        {
+            int index = combat.getMobs().indexOf(character);
+            JSONObject jCombat = null;
+            combat.deleteCharacter(character);
+            try {
+                jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
+                jCombat.getJSONArray("mobs").remove(index);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
 
-        try {
-            jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
-            jCombat.getJSONArray("characters").remove(index);
+            int index = combat.getCharacters().indexOf(character);
+            character.setInCombat(false, NULL_COMBAT);
+            combat.deleteCharacter(character);
+            JSONObject jCombat = null;
 
-            jOutsideCombat
-                    .put(new JSONObject()
-                            .put("name", character.getCharacterName())
-                            .put("type", character.getCharacterType())
-                            .put("ac",character.getArmorClass())
-                            .put("init_mod",character.getInitiativeModifier())
-                            .put("init_base",character.getBaseInitiative())
-                            .put("current_hp",character.getCurrentHealth())
-                            .put("temp_hp", character.getTempHP()));
+            try {
+                jCombat = jCombats.getJSONObject(mCombats.indexOf(combat));
+                jCombat.getJSONArray("characters").remove(index);
 
-            mOutsideCombat.add(character);
-        } catch (JSONException e) {
-            e.printStackTrace();
+                jOutsideCombat
+                        .put(new JSONObject()
+                                .put("name", character.getCharacterName())
+                                .put("type", character.getCharacterType())
+                                .put("ac", character.getArmorClass())
+                                .put("init_mod", character.getInitiativeModifier())
+                                .put("init_base", character.getBaseInitiative())
+                                .put("current_hp", character.getCurrentHealth())
+                                .put("temp_hp", character.getTempHP()));
+
+                mOutsideCombat.add(character);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         // TODO make async

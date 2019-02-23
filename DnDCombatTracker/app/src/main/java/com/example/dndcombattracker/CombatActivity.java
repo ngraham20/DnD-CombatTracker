@@ -125,7 +125,7 @@ public class CombatActivity extends AppCompatActivity {
     {
         mDialogNames = new ArrayList<>();
 
-        for(Character character : MasterList.getInstance().getmCharacters())
+        for(Character character : MasterList.getInstance().getmCharacterTemplates())
         {
             String name = character.getCharacterName();
             mDialogNames.add(name);
@@ -137,8 +137,7 @@ public class CombatActivity extends AppCompatActivity {
         builder.setItems(input, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
-                mDialogCharacter = MasterList.getInstance().getmCharacters().get(i);
+                mDialogCharacter = MasterList.getInstance().getmCharacterTemplates().get(i);
 
                 if(mDialogCharacter.getCharacterType().equals(Character.MOB))
                 {
@@ -184,18 +183,10 @@ public class CombatActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: Setting number of Mobs");
 
                 // finish and create mobs
-                if(!mDialogCharacter.getInCombat()) // if this character is not in a combat
-                {
-                    addCharacter(mDialogCharacter);
+                for(int j = 0; j < input.getValue(); j++) {
+                    addCharacter(mDialogCharacter); // will end up making copies
                 }
-                else if(mCharacters.contains(mDialogCharacter))
-                {
-                    badCharacterAddDialog("Characters cannot be added to the same combat more than once.");
-                }
-                else
-                {
-                    badCharacterAddDialog("Characters cannot be added to more than one combat.");
-                }
+
             }
         });
 

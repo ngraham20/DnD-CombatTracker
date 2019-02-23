@@ -84,8 +84,8 @@ public class CharacterActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: Getting Intent");
         int index = (int) getIntent().getSerializableExtra(CharacterAdapter.CHARACTER_EXTRA);
-        //character = CharacterMasterList.getInstance().getmCharacters().get(index);
-        character = MasterList.getInstance().getmCharacters().get(index);
+        //character = CharacterMasterList.getInstance().getmCharacterTemplates().get(index);
+        character = MasterList.getInstance().getmAllCharacters().get(index);
 
         Log.d(TAG, "onCreate: Setting Text Displays");
         setStatsText();
@@ -116,6 +116,8 @@ public class CharacterActivity extends AppCompatActivity {
                     setInitiativeText();
                     editInit.setText("");
                 }
+
+                save();
             }
         });
 
@@ -131,6 +133,7 @@ public class CharacterActivity extends AppCompatActivity {
                     editInitMod.setText("");
                 }
 
+                save();
             }
         });
 
@@ -145,6 +148,8 @@ public class CharacterActivity extends AppCompatActivity {
                     setTempHpText();
                     editTempHp.setText("");
                 }
+
+                save();
             }
         });
 
@@ -166,7 +171,7 @@ public class CharacterActivity extends AppCompatActivity {
                         editHp.setText("");
                     }
                 }
-
+                save();
             }
         });
 
@@ -181,6 +186,7 @@ public class CharacterActivity extends AppCompatActivity {
                     setArmorText();
                     editAC.setText("");
                 }
+                save();
             }
         });
 
@@ -195,6 +201,7 @@ public class CharacterActivity extends AppCompatActivity {
                     setNameText();
                     editName.setText("");
                 }
+                save();
 
             }
         });
@@ -318,6 +325,12 @@ public class CharacterActivity extends AppCompatActivity {
         {
             character.takeDamage(amount);
         }
+    }
+
+    private void save()
+    {
+        // TODO make this async
+        MasterList.getInstance().save();
     }
 
     /**

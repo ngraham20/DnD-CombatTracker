@@ -22,7 +22,6 @@ import android.widget.NumberPicker;
 
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class CharacterListFragment extends Fragment {
@@ -84,8 +83,8 @@ public class CharacterListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mCharacters = CharacterMasterList.getInstance().getmCharacters();
-        mCharacters = MasterList.getInstance().getmCharacters();
+        //mCharacters = CharacterMasterList.getInstance().getmCharacterTemplates();
+        mCharacters = MasterList.getInstance().getmCharacterTemplates();
     }
 
     /**
@@ -113,13 +112,13 @@ public class CharacterListFragment extends Fragment {
     {
 
         mDialogNames = new ArrayList<>();
-//        for(Character character : CharacterMasterList.getInstance().getmCharacters())
+//        for(Character character : CharacterMasterList.getInstance().getmCharacterTemplates())
 //        {
 //            String name = character.getCharacterName();
 //            mDialogNames.add(name);
 //        }
 
-        for(Character character : MasterList.getInstance().getmCharacters())
+        for(Character character : MasterList.getInstance().getmCharacterTemplates())
         {
             String name = character.getCharacterName();
             mDialogNames.add(name);
@@ -132,8 +131,7 @@ public class CharacterListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                //Character character = CharacterMasterList.getInstance().getmCharacters().get(i);
-                Character character = MasterList.getInstance().getmCharacters().get(i);
+                Character character = MasterList.getInstance().getmCharacterTemplates().get(i);
 
                 if(!character.getInCombat())
                 {

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         // set file handler context now
         DnDFileHandler.getInstance().setContext(this);
-        CharacterMasterList.CreateMasterFileIfNotExist();
+        //CharacterMasterList.CreateMasterFileIfNotExist();
         MasterList.CreateFileIfNotExist();
 
         try {
