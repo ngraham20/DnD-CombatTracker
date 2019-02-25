@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 
 // learned much of this from https://www.youtube.com/watch?v=Vyqz_-sJGFk
@@ -113,7 +111,11 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
     public void deleteItem(int position)
     {
-        Character character = MasterList.getInstance().getmCharacterTemplates().get(position);
+
+
+
+
+        Character character = mCharacters.get(position);
 
         if(!character.getInCombat())
         {
@@ -121,7 +123,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
             mRecentlyDeletedCharacterPosition = position;
             // TODO this next line should be refactored for async or modified for better code
             //CharacterMasterList.getInstance().removeCharacter(character);
-            MasterList.getInstance().removeCharacter(character);
+            mCharacters.remove(character);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position,mCharacters.size());
 
@@ -145,12 +147,8 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
 
     private void undoDelete()
     {
-        try {
-            MasterList.getInstance().addCharacter(mRecentlyDeletedCharacter);
+            mCharacters.add(mRecentlyDeletedCharacter);
             notifyItemInserted(mCharacters.indexOf(mRecentlyDeletedCharacter));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void badCharacterDeleteDialog(String message)
