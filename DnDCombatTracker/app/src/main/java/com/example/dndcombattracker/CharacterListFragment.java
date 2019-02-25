@@ -71,16 +71,16 @@ public class CharacterListFragment extends Fragment {
             }
         });
 
-        FloatingActionButton deleteFab = view.findViewById(R.id.delete_character_button);
-        deleteFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.d(TAG, "onClick: DeleteFAB Clicked");
-                Context context = v.getContext();
-                beginCharacterDeletionDialog();
-            }
-        });
+//        FloatingActionButton deleteFab = view.findViewById(R.id.delete_character_button);
+//        deleteFab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Log.d(TAG, "onClick: DeleteFAB Clicked");
+//                Context context = v.getContext();
+//                beginCharacterDeletionDialog();
+//            }
+//        });
 
         return view;
     }
